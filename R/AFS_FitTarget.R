@@ -44,7 +44,7 @@ Fit_AFS <- function(prob, N, per_rv){ ### only works with N>2200
   }  
   
   tune <- c(1,0) #### start with the function 1/x
-  S <- slsqp(tune, fn = calc_prob_LS, hin = hin.tune )
+  S <- suppressMessages(slsqp(tune, fn = calc_prob_LS, hin = hin.tune ))
   b <- per_rv/sum(1/((c1+S$par[2])^(S$par[1])))
   
   return(c(S$par[2], S$par[1], b))
