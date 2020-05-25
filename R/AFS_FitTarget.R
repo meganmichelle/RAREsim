@@ -13,6 +13,12 @@
 #' @author Megan M Null, \email{megan.null@ucdenver.edu}
 #' @seealso \code{\link{AFS_FitTarget}}
 #' @keywords RAREsim
+#'
+#' @example
+#'Fit_AFS(c(.5,.25,.1,.05,0.04,0.2,0.01), 8128, 0.97)
+#'
+#' @export
+#'
 
 Fit_AFS <- function(prop, N, per_rv){ ### only works with N>2200
   ### prob is the probability of each bin (9 probabilities)
