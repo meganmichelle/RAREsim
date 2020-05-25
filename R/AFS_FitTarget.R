@@ -1,5 +1,20 @@
+#' RAREsim
+#'
+#' Simulate rare variant genetic data
+#'
+#' @param prop Observed probabilities for each MAC bin
+#'
+#' @param N Number of individuals in the target data
+#'
+#' @param per_rv percent of rare variants - just the sum of the proportions
+#'
+#' @return Vector of parameters - alpha, beta, and b
+#'
+#' @author Megan M Null, \email{megan.null@ucdenver.edu}
+#' @seealso \code{\link{AFS_FitTarget}}
+#' @keywords RAREsim
 
-Fit_AFS <- function(prob, N, per_rv){ ### only works with N>2200
+Fit_AFS <- function(prop, N, per_rv){ ### only works with N>2200
   ### prob is the probability of each bin (9 probabilities)
   ### N is the number of samples
   n05 <- floor(N*2*.005) ### MAF = 0.5%
