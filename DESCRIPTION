@@ -5,3 +5,4 @@ Title: RAREsim
 Description: Simulating rare variant genetic data
 Author: Megan M Null
 Maintainer: Megan M Null <megan.null@ucdenver.edu>
+RoxygenNote: 7.1.0
