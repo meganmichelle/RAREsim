@@ -1,2 +1,7 @@
 Package: RAREsim
 Version: 0.1
+Date: May 25, 2020
+Title: RAREsim
+Description: Simulating rare variant genetic data
+Author: Megan M Null
+Maintainer: Megan M Null <megan.null@ucdenver.edu>
