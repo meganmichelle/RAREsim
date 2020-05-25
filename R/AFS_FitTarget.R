@@ -21,7 +21,7 @@
 #'
 
 Fit_AFS <- function(prop, N, per_rv){ ### only works with N>2200
-  ### prob is the probability of each bin (9 probabilities)
+  ### prop is the proportion of each bin (7 proportions)
   ### N is the number of samples
   n05 <- floor(N*2*.005) ### MAF = 0.5%
   n1 <- floor(N*2*.01) ### MAF = 1%
@@ -33,8 +33,8 @@ Fit_AFS <- function(prop, N, per_rv){ ### only works with N>2200
   mac$Start <- c(1:3,6,11,21,(n05+1))
   mac$End <- c(1:2,5,10,20,n05,n1)
   
-  mac$prob <- (as.numeric(as.character(prob))) #### this will need to be cleaned up so it  always works
-  names(mac)[3] <- 'prob'
+  mac$prop <- (as.numeric(as.character(prop))) #### this will need to be cleaned up so it  always works
+  names(mac)[3] <- 'prop'
   #print(mac)
   
   
@@ -57,7 +57,7 @@ Fit_AFS <- function(prop, N, per_rv){ ### only works with N>2200
     all <- 0
     for(i in 1:nrow(mac)){
       E <- sum(b_mac[mac$Start[i]:mac$End[i]])
-      O <- mac$prob[i]
+      O <- mac$prop[i]
       c <- (E-O)^2
       all <- all+c
     }
