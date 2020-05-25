@@ -17,6 +17,14 @@ Fit_AFS <- function(prob, N, per_rv){ ### only works with N>2200
   #print(mac)
   
   
+  hin.tune <- function(x) {
+    h <- numeric(1)
+    h[1] <- x[1] 
+    return(h)
+  }
+  
+  
+  
   c1 <- 1:n1 #### MACs to use in the function
   
   #suppressMessages()
