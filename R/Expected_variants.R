@@ -15,16 +15,6 @@
 #'
 #'
 
-
-## simulate african
-alpha <- 1.5883
-beta <- -0.3083
-b <- 0.2872
-phi <- 0.1508
-omega <- 0.6323
-Ntar <- 8128
-Size <- 5000
-
 Expected_variants <- function(alpha, beta, b, phi, omega, Ntar, Size){
 
   
@@ -49,5 +39,4 @@ Expected_variants <- function(alpha, beta, b, phi, omega, Ntar, Size){
   
   return(loop)
 }
-# 
-# Expected_variants(alpha, beta, b, phi, omega, Ntar, Size)
+
