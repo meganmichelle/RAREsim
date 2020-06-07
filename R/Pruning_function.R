@@ -117,8 +117,7 @@ Prune <- function(hap_file_name, MAC, expected){
        #### delete the entire list
        torun <- paste0('sed -i -f List2delete.sed ', hap_file_name1)
        system(torun)
-     }
-  system(paste0('gzip ', hap_file_name1))
+       system(paste0('gzip ', hap_file_name1))
 }
 
 
