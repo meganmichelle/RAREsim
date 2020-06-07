@@ -23,14 +23,14 @@ Prune <- function(hap_file_name, MAC, expected){
   
   rem_all<-c()
   change_all <-  c() 
-  if(length(which(MAC$V1>0))<sum(expected$exp)){
+  if(length(which(MAC$V1>0))<sum(expected$Expected_var)){
     print('Error, not enough rare alleles')
   }
-  for(k in nrow(MAC):1){
+  for(k in nrow(expected):1){
       tmp <-  MAC[which(MAC$V1 >= expected$Start[k] & MAC$V1 <= expected$End[k]),]
         ##### if there are not any SNVs in the bin, tmp is all NA's...
       n1 <- nrow(tmp)
-      expect <- expected$exp[k]
+      expect <- expected$Expected_var[k]
         #print(expect)
       if(n1>0){
       p <- expect/n1
@@ -55,7 +55,7 @@ Prune <- function(hap_file_name, MAC, expected){
           p1 <- n2/nrow(rem_all)  ### this is the proportion from rem_all
           rem_all$rd <- runif(nrow(rem_all))
           to_change <- rem_all[which(rem_all$rd  <= p1),]
-          mac_range <-  c(loop$Start[k]:loop$End[k])
+          mac_range <-  c(expected$Start[k]:expected$End[k])
           to_change$new_MAC <- sample(mac_range, nrow(to_change),
                                       replace = TRUE)
           ### change them within the MAC file.
@@ -67,20 +67,20 @@ Prune <- function(hap_file_name, MAC, expected){
   ##### here we are done with the theoretical pruning
   ##### now change the haplotypes
   ### First, the variants that change alternate alleles
+  command_unzip <- paste0('gunzip ', hap_file_name)
+  system(command_unzip)
+  hap_file_name1 <- as.character(hap_file_name)
+  hap_file_name1 <- substr(hap_file_name1, 1, (nchar(hap_file_name1)-3))
      if(length(change_all)>0){
-       command_unzip <- paste0('gunzip Block', bl, '_rep', rep, '.controls.haps.gz')
-       system(command_unzip)
-       hap_file_name1 <- as.character(hap_file_name)
-       hap_file_name1 <- substr(hap_file_name1, 1, (nchar(hap_file_name1)-3))
         ##### change all: MAC, row #, draw, new MAC
         for(ch in 1:nrow(change_all)){
           
-          n <- change_all$num #### this is the line of interest
-          k <- change_all$new_MAC
+          n <- change_all$num[ch] #### this is the line of interest
+          k <- change_all$new_MAC[ch]
         
-        try <- paste0('sed -n \'', n, 'p;',
-                      (n+1),'q\' ', hap_file_name)
-        ri <- system(try, intern = TRUE)
+        get_line <- paste0('sed -n \'', n, 'p;',
+                      (n+1),'q\' ', hap_file_name1)
+        ri <- system(get_line, intern = TRUE)
         re <- unlist(strsplit(ri, split=" "))
         re <- as.numeric(as.character(re))
         
@@ -105,9 +105,11 @@ Prune <- function(hap_file_name, MAC, expected){
                         hap_file_name1)
         system(torun)
         #### and remove the 'orginal' line n
-        system(paste0('sed -i \'', n, 'd\' ', hap_file_name))
+        system(paste0('sed -i \'', n, 'd\' ', hap_file_name1))
         }
-       #### Remove the pruned variants
+     }
+       
+       ##### this needs to work witth the zipped file!
        todel <- paste(rem_all$num, collapse = 'd; ')
        todel <- paste0(todel,'d')
        write.table(todel, 'List2delete.sed', row.names = FALSE, 
@@ -115,18 +117,8 @@ Prune <- function(hap_file_name, MAC, expected){
        #### delete the entire list
        torun <- paste0('sed -i -f List2delete.sed ', hap_file_name1)
        system(torun)
-       system(paste0('gzip ', hap_file_name1))
-     }else{
-       ##### this needs to work witth the zipped file!
-       todel <- paste(rem_all$num, collapse = 'd; ')
-       todel <- paste0(todel,'d')
-       write.table(todel, 'List2delete.sed', row.names = FALSE, 
-                   col.names = FALSE, quote = FALSE)
-       #### delete the entire list
-       torun <- paste0('zcat ', hap_file_name,'| sed -i -f List2delete.sed ')
-       system(torun)
      }
-
+  system(paste0('gzip ', hap_file_name1))
 }
 
 
