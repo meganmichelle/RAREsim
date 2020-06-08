@@ -4,11 +4,14 @@ author: "Megan Null"
 date: "5/25/2020"
 output: html_document
 ---
-
 This vigette describes how to use the RAREsim R package to simulate rare variant genetic data. 
 
-The RAREsim R package provides functions:
-XXX list functions here XXX .
+The RAREsim R package currently provides functions:  
+
+* Expected_variants  
+* Fit_AFS  
+* Total_variants  
+* Prune
 
 Here we will walk through an example simulation of RAREsim using one cM block on chromosome 19 and four ancestry groups: African, East Asian, Non-Finnish European, and South Asian.
 
@@ -19,7 +22,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Install the package
 
 ```{r }
-#library(devtools)
 #install.packages('RAREsim')
 library(RAREsim)
 ```
@@ -67,3 +69,8 @@ plot(pressure)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r eval=FALSE}
+A <- data.frame(ref_eur  = c(pi_star = 0, pi_hat = .15),
+                 obs_afr  = c(pi_star = 1, pi_hat = .85))
+```
