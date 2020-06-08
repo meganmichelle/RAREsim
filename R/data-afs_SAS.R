@@ -2,7 +2,7 @@
 #'
 #' @docType data
 #'
-#' @usage data(afs_SAS)
+#' @usage data(afs_sas)
 #'
 #' @format A data frame for the Non-Finnish European AFS target data
 #'
@@ -14,4 +14,4 @@
 #'
 
 
-"afs_SAS"
+"afs_sas"
