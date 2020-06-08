@@ -11,7 +11,7 @@
 #' @return Vector of parameters - alpha, beta, and b
 #'
 #' @author Megan M Null, \email{megan.null@ucdenver.edu}
-#' @seealso \code{\link{AFS_FitTarget}}
+#' 
 #' @keywords RAREsim
 #'
 #'
