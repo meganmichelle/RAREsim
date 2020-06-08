@@ -16,6 +16,7 @@
 #'
 #'
 #' @export
+#' @importFrom nloptr slsqp
 #'
 
 Fit_AFS <- function(prop, N, per_rv){ ### only works with N>2200

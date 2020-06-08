@@ -3,3 +3,7 @@
 export(Expected_variants)
 export(Fit_AFS)
 export(Fit_total_variants)
+export(Prune)
+importFrom(nloptr,slsqp)
+importFrom(stats,runif)
+importFrom(utils,write.table)

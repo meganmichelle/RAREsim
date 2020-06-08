@@ -2,9 +2,13 @@ Package: RAREsim
 Version: 0.1
 Date: May 25, 2020
 Title: RAREsim
-Description: Simulating rare variant genetic data
+Description: This is a package for simulating rare variant genetic data.
 Author: Megan M Null
 Maintainer: Megan M Null <megan.null@ucdenver.edu>
 License: MIT + file LICENSE
 RoxygenNote: 7.1.0
 Encoding: UTF-8
+VignetteBuilder: knitr
+Imports:
+    nloptr,
+    knitr,
