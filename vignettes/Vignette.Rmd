@@ -2,7 +2,10 @@
 title: "RAREsim Vignette V1"
 author: "Megan Null"
 date: "5/25/2020"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
 ---
 This vigette describes how to use the RAREsim R package to simulate rare variant genetic data. 
 
@@ -30,6 +33,17 @@ library(RAREsim)
 
 The first function is the Total Number of Variants function. For a given region, the Total Number of Variants function estimates the number of variants per Kb. This is done by estimating $\phi$ and $\omega$ to minimize the function $f_{Var}(x)=\phi x^\omega$.
 
+```{r }
+# load the data
+data("Total_num_var_target_afr")
+print(tot_num_var_afr)
+```
+
+```{r }
+# load the data
+#data("Total_num_var_target_afr")
+#print(tot_num_var_afr)
+```
 ## Fitting the Allele Frequency Spectrum function
 
 The AFS function inputs allele frequency information and outputs estimates for $\alpha$, $\beta$, and $b$.
@@ -38,9 +52,14 @@ First, load in example data:
 
 ```{r }
 # load the data
-data("AFS_target_data_NFE")
-print(afs_nfe)
+data("AFS_target_data_AFR")
+print(afs_afr)
 ```
+
+```{r }
+Fit_AFS(c(.5,.25,.1,.05,0.04,0.2,0.01), 8128, 0.97)
+```
+
 
 ## Pruning Variants
 
@@ -68,9 +87,4 @@ You can also embed plots, for example:
 plot(pressure)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
-```{r eval=FALSE}
-A <- data.frame(ref_eur  = c(pi_star = 0, pi_hat = .15),
-                 obs_afr  = c(pi_star = 1, pi_hat = .85))
-```
