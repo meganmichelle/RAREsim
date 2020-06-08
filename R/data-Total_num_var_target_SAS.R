@@ -1,10 +1,10 @@
-#' South Asian Total Number of Variants target data from gnomAD (cite)
+#' African/African American target data from gnomAD (cite)
 #'
 #' @docType data
 #'
-#' @usage data(Total_num_var_SAS)
+#' @usage data(Total_num_var_target_SAS)
 #'
-#' @format A data frame for the South Asian Total Number of Variants target data
+#' @format A data frame for the Non-Finnish European AFS target data
 #'
 #' @keywords datasets
 #'
@@ -14,4 +14,4 @@
 #'
 
 
-"Total_num_var_SAS"
+"Total_num_var_target_SAS"

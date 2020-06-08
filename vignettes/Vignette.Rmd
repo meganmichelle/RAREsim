@@ -35,14 +35,12 @@ The first function is the Total Number of Variants function. For a given region,
 
 ```{r }
 # load the data
-data("Total_num_var_target_afr")
-print(tot_num_var_afr)
+#data("Total_num_var_target_AFR")
+#print(tot_num_var_afr)
 ```
 
 ```{r }
-# load the data
-#data("Total_num_var_target_afr")
-#print(tot_num_var_afr)
+
 ```
 ## Fitting the Allele Frequency Spectrum function
 
