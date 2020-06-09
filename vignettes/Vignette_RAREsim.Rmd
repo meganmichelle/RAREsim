@@ -15,10 +15,11 @@ The RAREsim R package currently provides functions:
 
 * Expected_variants  
 * Fit_AFS  
+* Fit_total_variants
 * Total_variants  
 * Prune
 
-Here we will walk through an example simulation of RAREsim using one cM block on chromosome 19 and four ancestry groups: African, East Asian, Non-Finnish European, and South Asian.
+Here we will walk through an example simulation of RAREsim using one cM block on chromosome 19 and the African ancestry group from gnomAD.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -33,17 +34,47 @@ library(RAREsim)
 
 ## Fitting the Total Number of Variants function
 
-The first function is the Total Number of Variants function. For a given region, the Total Number of Variants function estimates the number of variants per Kb. This is done by estimating $\phi$ and $\omega$ to minimize the function $f_{Var}(x)=\phi x^\omega$.
+The first function is the Total Number of Variants function. For a given region, the Total Number of Variants function estimates the number of variants per Kb. This is done by estimating $\phi$ and $\omega$ to minimize the function $f_{Var}(n)=\phi n^\omega$.
+
+The Total Number of Variants target data consists of various sample sizes and the observed number of variants per Kb in the region of interest.
 
 ```{r }
 # load the data
-#data("Total_num_var_target_AFR")
-#print(tot_num_var_afr)
+data("tot_num_var_afr")
+print(tot_num_var_afr)
 ```
+
+The target data is used to estimate $\phi$ and $\omega$ within a least squares loss function, optimizing using sequential quadratic programming.
 
 ```{r }
-
+Fit_total_variants(tot_num_var_afr)
 ```
+
+The output of the Fit_total_variants function are the parameters $\phi$ and $\omega$. The function can then be used to estimate the number of variants per Kb within the region for the number of individuals to be simulated $N_{sim}$, or any other sample size. For example, to simulate the sample size observed in gnomAD for the African ancestry group ($N_{sim}=8128), we calculate $f_{Var}(N_{sim})=\phi N_{sim}^\omega$
+
+
+```{r }
+Total_number_variants(phi = 0.1638108, omega = 0.6248848, n = 8128)
+```
+
+Above the number of variants was estimated using parameters fit with the target data. However, RAREsim also provides ancestry specific default parameters that can be used to estimate the number of variants per Kb.
+
+XXXX in the perfect world, this would show the fit of the function for the one block
+
+XXX add default parameters
+
+```{r }
+#Total_number_variants(0.1638108, 0.6248848, 8128) #with default
+```
+
+Now this is the number of variants per Kb. The cM block we are simulating has a total of 19,029 bp. Thus, to get the total expected number of variants in the region, we multiple the expected number of variants per Kb (Total_number_variants) by 19.029.
+
+```{r }
+19.029*Total_number_variants(phi = 0.1638108, omega = 0.6248848, n = 8128)
+```
+
+At this point, we know how many variants we expect to see within the region. We now need to get the allele frequency spectrum (AFS) to calculate the proportion of variants at various minor allele counts.
+
 ## Fitting the Allele Frequency Spectrum function
 
 The AFS function inputs allele frequency information and outputs estimates for $\alpha$, $\beta$, and $b$.

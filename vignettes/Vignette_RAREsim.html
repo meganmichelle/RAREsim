@@ -311,11 +311,12 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </li>
 <li>Fit_AFS<br />
 </li>
+<li>Fit_total_variants</li>
 <li>Total_variants<br />
 </li>
 <li>Prune</li>
 </ul>
-<p>Here we will walk through an example simulation of RAREsim using one cM block on chromosome 19 and four ancestry groups: African, East Asian, Non-Finnish European, and South Asian.</p>
+<p>Here we will walk through an example simulation of RAREsim using one cM block on chromosome 19 and the African ancestry group from gnomAD.</p>
 <div id="install-the-package" class="section level2">
 <h2>Install the package</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">#install.packages('RAREsim')</span></a>
@@ -323,23 +324,51 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="fitting-the-total-number-of-variants-function" class="section level2">
 <h2>Fitting the Total Number of Variants function</h2>
-<p>The first function is the Total Number of Variants function. For a given region, the Total Number of Variants function estimates the number of variants per Kb. This is done by estimating <span class="math inline">\(\phi\)</span> and <span class="math inline">\(\omega\)</span> to minimize the function <span class="math inline">\(f_{Var}(x)=\phi x^\omega\)</span>.</p>
+<p>The first function is the Total Number of Variants function. For a given region, the Total Number of Variants function estimates the number of variants per Kb. This is done by estimating <span class="math inline">\(\phi\)</span> and <span class="math inline">\(\omega\)</span> to minimize the function <span class="math inline">\(f_{Var}(n)=\phi n^\omega\)</span>.</p>
+<p>The Total Number of Variants target data consists of various sample sizes and the observed number of variants per Kb in the region of interest.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># load the data</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#data(&quot;Total_num_var_target_AFR&quot;)</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#print(tot_num_var_afr)</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">data</span>(<span class="st">&quot;tot_num_var_afr&quot;</span>)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">print</span>(tot_num_var_afr)</a></code></pre></div>
+<pre><code>##      downsample     per_kb
+## 3673         10  0.2627568
+## 3674         20  0.6831678
+## 3675         50  1.5239897
+## 3676        100  2.7326712
+## 3677        200  4.3092123
+## 3678        500  7.6199485
+## 3679       1000 12.1919176
+## 3680       2000 19.3914551
+## 3681       3070 25.2246571
+## 3682       5000 33.4226707
+## 3683       5040 33.7905302
+## 3684       8128 45.1941773</code></pre>
+<p>The target data is used to estimate <span class="math inline">\(\phi\)</span> and <span class="math inline">\(\omega\)</span> within a least squares loss function, optimizing using sequential quadratic programming.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">Fit_total_variants</span>(tot_num_var_afr)</a></code></pre></div>
+<pre><code>## [1] 0.1638108 0.6248848</code></pre>
+<p>The output of the Fit_total_variants function are the parameters <span class="math inline">\(\phi\)</span> and <span class="math inline">\(\omega\)</span>. The function can then be used to estimate the number of variants per Kb within the region for the number of individuals to be simulated <span class="math inline">\(N_{sim}\)</span>, or any other sample size. For example, to simulate the sample size observed in gnomAD for the African ancestry group ($N_{sim}=8128), we calculate <span class="math inline">\(f_{Var}(N_{sim})=\phi N_{sim}^\omega\)</span></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">Total_number_variants</span>(<span class="dt">phi =</span> <span class="fl">0.1638108</span>, <span class="dt">omega =</span> <span class="fl">0.6248848</span>, <span class="dt">n =</span> <span class="dv">8128</span>)</a></code></pre></div>
+<pre><code>## [1] 45.46026</code></pre>
+<p>Above the number of variants was estimated using parameters fit with the target data. However, RAREsim also provides ancestry specific default parameters that can be used to estimate the number of variants per Kb.</p>
+<p>XXXX in the perfect world, this would show the fit of the function for the one block</p>
+<p>XXX add default parameters</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co">#Total_number_variants(0.1638108, 0.6248848, 8128) #with default</span></a></code></pre></div>
+<p>Now this is the number of variants per Kb. The cM block we are simulating has a total of 19,029 bp. Thus, to get the total expected number of variants in the region, we multiple the expected number of variants per Kb (Total_number_variants) by 19.029.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="fl">19.029</span><span class="op">*</span><span class="kw">Total_number_variants</span>(<span class="dt">phi =</span> <span class="fl">0.1638108</span>, <span class="dt">omega =</span> <span class="fl">0.6248848</span>, <span class="dt">n =</span> <span class="dv">8128</span>)</a></code></pre></div>
+<pre><code>## [1] 865.0633</code></pre>
+<p>At this point, we know how many variants we expect to see within the region. We now need to get the allele frequency spectrum (AFS) to calculate the proportion of variants at various minor allele counts.</p>
 </div>
 <div id="fitting-the-allele-frequency-spectrum-function" class="section level2">
 <h2>Fitting the Allele Frequency Spectrum function</h2>
 <p>The AFS function inputs allele frequency information and outputs estimates for <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span>, and <span class="math inline">\(b\)</span>.</p>
 <p>First, load in example data:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># load the data</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">data</span>(<span class="st">&quot;afs_afr&quot;</span>)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">print</span>(afs_afr)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># load the data</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">data</span>(<span class="st">&quot;afs_afr&quot;</span>)</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw">print</span>(afs_afr)</a></code></pre></div>
 <pre><code>##     block Singletons Doubletons    MAC.3.5   MAC.6.10 MAC.11.20 MAC.21.MAF0.005
 ## 146    37    0.50258  0.1630547 0.08255934 0.05882353 0.0371517      0.05675955
 ##     MAF0.005.MAF0.01 Total pop  N_bp Zeros
 ## 146       0.01754386   969 AFR 19029     0</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">Fit_AFS</span>(afs_afr[<span class="dv">2</span><span class="op">:</span><span class="dv">8</span>], <span class="dv">8128</span>, <span class="fl">0.97</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">Fit_AFS</span>(afs_afr[<span class="dv">2</span><span class="op">:</span><span class="dv">8</span>], <span class="dv">8128</span>, <span class="fl">0.97</span>)</a></code></pre></div>
 <pre><code>## [1] -0.3090162  1.5313376  0.2926182</code></pre>
 </div>
 <div id="pruning-variants" class="section level2">
@@ -351,7 +380,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>The default parameters can be used to estimate the number of variants within each MAC bin to use for simulation.</p>
 <p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
 <p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">summary</span>(cars)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">summary</span>(cars)</a></code></pre></div>
 <pre><code>##      speed           dist       
 ##  Min.   : 4.0   Min.   :  2.00  
 ##  1st Qu.:12.0   1st Qu.: 26.00  
