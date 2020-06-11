@@ -321,11 +321,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h2>Install the package</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">#install.packages('RAREsim')</span></a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(RAREsim)</a></code></pre></div>
+<p>RAREsim has three main steps: (1) simulating genetic data with an abundance of rare variants, (2) estimating the expected number of variants in MAC bins, and (3) pruning the rare variants to match the estimated number of variants in each MAC bin.</p>
+<p>Simulating genetic data is done using HAPGEN2 with information at all bp, including those bp that are monomorphic in the input simulation data. Within HAPGEN2, the vast majority of simulated rare variants arise from a mutation from an all reference bp within the input simulated data. Thus, we add information at all bp, including bp with all reference alleles, to allow for an abundance of rare variants.</p>
+<p>In order to prune the simulated data to approximate real data, RAREsim estimates the number of variants within MAC bins. This is either done by using default parametes, or by fitting target data. Here we will demonstrate fitting target data.</p>
 </div>
 <div id="fitting-the-total-number-of-variants-function" class="section level2">
 <h2>Fitting the Total Number of Variants function</h2>
 <p>The first function is the Total Number of Variants function. For a given region, the Total Number of Variants function estimates the number of variants per Kb. This is done by estimating <span class="math inline">\(\phi\)</span> and <span class="math inline">\(\omega\)</span> to minimize the function <span class="math inline">\(f_{Var}(n)=\phi n^\omega\)</span>.</p>
-<p>The Total Number of Variants target data consists of various sample sizes and the observed number of variants per Kb in the region of interest.</p>
+<p>The Total Number of Variants target data consists of various sample sizes and the observed number of variants per Kb in the region of interest. Ancestry specific data is advised.</p>
+<p>RAREsim has example data within the R package, with the African Total Number of Variants target data shown here.</p>
+<p>The first column is the sample size in number of individuals and the second column is the observed number of variants in the region of interest.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># load the data</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">data</span>(<span class="st">&quot;tot_num_var_afr&quot;</span>)</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">print</span>(tot_num_var_afr)</a></code></pre></div>
@@ -342,25 +347,34 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## 3682       5000 33.4226707
 ## 3683       5040 33.7905302
 ## 3684       8128 45.1941773</code></pre>
-<p>The target data is used to estimate <span class="math inline">\(\phi\)</span> and <span class="math inline">\(\omega\)</span> within a least squares loss function, optimizing using sequential quadratic programming.</p>
+<p>The target data is used to estimate <span class="math inline">\(\phi\)</span> and <span class="math inline">\(\omega\)</span> within a least squares loss function, optimizing using sequential quadratic programming. It is implemented with the <em>Fit_total_variants</em> function.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">Fit_total_variants</span>(tot_num_var_afr)</a></code></pre></div>
 <pre><code>## [1] 0.1638108 0.6248848</code></pre>
-<p>The output of the Fit_total_variants function are the parameters <span class="math inline">\(\phi\)</span> and <span class="math inline">\(\omega\)</span>. The function can then be used to estimate the number of variants per Kb within the region for the number of individuals to be simulated <span class="math inline">\(N_{sim}\)</span>, or any other sample size. For example, to simulate the sample size observed in gnomAD for the African ancestry group ($N_{sim}=8128), we calculate <span class="math inline">\(f_{Var}(N_{sim})=\phi N_{sim}^\omega\)</span></p>
+<p>XXX make the output labeled with phi and omega</p>
+<p>The output of the Fit_total_variants function are the parameters <span class="math inline">\(\phi\)</span> and <span class="math inline">\(\omega\)</span>, respectively. The estimated parameters can then be used to estimate the number of variants per Kb within the region of interest, given the number of individuals to be simulated <span class="math inline">\(N_{sim}\)</span>.</p>
+<p>For example, to simulate the sample size observed in gnomAD for the African ancestry group ($N_{sim}=8128), we calculate <span class="math inline">\(f_{Var}(N_{sim})=\phi N_{sim}^\omega\)</span>. This can be done with the <em>Total_number_variants</em> function. A value for phi, omega, and the sample size is required.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">Total_number_variants</span>(<span class="dt">phi =</span> <span class="fl">0.1638108</span>, <span class="dt">omega =</span> <span class="fl">0.6248848</span>, <span class="dt">n =</span> <span class="dv">8128</span>)</a></code></pre></div>
 <pre><code>## [1] 45.46026</code></pre>
-<p>Above the number of variants was estimated using parameters fit with the target data. However, RAREsim also provides ancestry specific default parameters that can be used to estimate the number of variants per Kb.</p>
 <p>XXXX in the perfect world, this would show the fit of the function for the one block</p>
+<p>The number of variants per Kb was estimated using parameters fit with the target data. However, RAREsim also provides ancestry specific default parameters that can be used to estimate the number of variants per Kb.</p>
 <p>XXX add default parameters</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co">#Total_number_variants(0.1638108, 0.6248848, 8128) #with default</span></a></code></pre></div>
 <p>Now this is the number of variants per Kb. The cM block we are simulating has a total of 19,029 bp. Thus, to get the total expected number of variants in the region, we multiple the expected number of variants per Kb (Total_number_variants) by 19.029.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="fl">19.029</span><span class="op">*</span><span class="kw">Total_number_variants</span>(<span class="dt">phi =</span> <span class="fl">0.1638108</span>, <span class="dt">omega =</span> <span class="fl">0.6248848</span>, <span class="dt">n =</span> <span class="dv">8128</span>)</a></code></pre></div>
 <pre><code>## [1] 865.0633</code></pre>
-<p>At this point, we know how many variants we expect to see within the region. We now need to get the allele frequency spectrum (AFS) to calculate the proportion of variants at various minor allele counts.</p>
+<p>At this point, we know how many variants we expect to see within the region. We now need the allele frequency spectrum (AFS) to calculate the proportion of variants at various minor allele counts.</p>
 </div>
 <div id="fitting-the-allele-frequency-spectrum-function" class="section level2">
 <h2>Fitting the Allele Frequency Spectrum function</h2>
-<p>The AFS function inputs allele frequency information and outputs estimates for <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span>, and <span class="math inline">\(b\)</span>.</p>
-<p>First, load in example data:</p>
+<p>The AFS function inputs allele frequency information and outputs estimates for <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span>, and <span class="math inline">\(b\)</span>. The required AFS target data is a vector with the number of variants in each MAC bin:<br />
+MAC=1<br />
+MAC=2<br />
+MAC=3-5<br />
+MAC=6-10<br />
+MAC=11-20<br />
+MAC=21 - MAF = 0.5%<br />
+MAC = 0.5% - MAF = 1%</p>
+<p>Below we examine in the AFS target data for the African ancestry group.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># load the data</span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">data</span>(<span class="st">&quot;afs_afr&quot;</span>)</a>
 <a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw">print</span>(afs_afr)</a></code></pre></div>
@@ -368,8 +382,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## 146    37    0.50258  0.1630547 0.08255934 0.05882353 0.0371517      0.05675955
 ##     MAF0.005.MAF0.01 Total pop  N_bp Zeros
 ## 146       0.01754386   969 AFR 19029     0</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">Fit_AFS</span>(afs_afr[<span class="dv">2</span><span class="op">:</span><span class="dv">8</span>], <span class="dv">8128</span>, <span class="fl">0.97</span>)</a></code></pre></div>
-<pre><code>## [1] -0.3090162  1.5313376  0.2926182</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co">#Fit_AFS(afs_afr, 8128, 0.97)</span></a></code></pre></div>
 </div>
 <div id="pruning-variants" class="section level2">
 <h2>Pruning Variants</h2>
@@ -378,16 +391,6 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="expected-number-of-variants-with-default-parameter" class="section level3">
 <h3>Expected Number of Variants with Default Parameter</h3>
 <p>The default parameters can be used to estimate the number of variants within each MAC bin to use for simulation.</p>
-<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">summary</span>(cars)</a></code></pre></div>
-<pre><code>##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00</code></pre>
 </div>
 </div>
 <div id="including-plots" class="section level2">

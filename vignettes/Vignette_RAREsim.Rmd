@@ -32,11 +32,21 @@ knitr::opts_chunk$set(echo = TRUE)
 library(RAREsim)
 ```
 
+RAREsim has three main steps: (1) simulating genetic data with an abundance of rare variants, (2) estimating the expected number of variants in MAC bins, and (3) pruning the rare variants to match the estimated number of variants in each MAC bin.
+
+Simulating genetic data is done using HAPGEN2 with information at all bp, including those bp that are monomorphic in the input simulation data. Within HAPGEN2, the vast majority of simulated rare variants arise from a mutation from an all reference bp within the input simulated data. Thus, we add information at all bp, including bp with all reference alleles, to allow for an abundance of rare variants.
+
+In order to prune the simulated data to approximate real data, RAREsim estimates the number of variants within MAC bins. This is either done by using default parametes, or by fitting target data. Here we will demonstrate fitting target data.
+
 ## Fitting the Total Number of Variants function
 
 The first function is the Total Number of Variants function. For a given region, the Total Number of Variants function estimates the number of variants per Kb. This is done by estimating $\phi$ and $\omega$ to minimize the function $f_{Var}(n)=\phi n^\omega$.
 
-The Total Number of Variants target data consists of various sample sizes and the observed number of variants per Kb in the region of interest.
+The Total Number of Variants target data consists of various sample sizes and the observed number of variants per Kb in the region of interest. Ancestry specific data is advised. 
+
+RAREsim has example data within the R package, with the African Total Number of Variants target data shown here.
+
+The first column is the sample size in number of individuals and the second column is the observed number of variants in the region of interest.
 
 ```{r }
 # load the data
@@ -44,22 +54,26 @@ data("tot_num_var_afr")
 print(tot_num_var_afr)
 ```
 
-The target data is used to estimate $\phi$ and $\omega$ within a least squares loss function, optimizing using sequential quadratic programming.
+The target data is used to estimate $\phi$ and $\omega$ within a least squares loss function, optimizing using sequential quadratic programming. It is implemented with the *Fit_total_variants* function.
 
 ```{r }
 Fit_total_variants(tot_num_var_afr)
 ```
 
-The output of the Fit_total_variants function are the parameters $\phi$ and $\omega$. The function can then be used to estimate the number of variants per Kb within the region for the number of individuals to be simulated $N_{sim}$, or any other sample size. For example, to simulate the sample size observed in gnomAD for the African ancestry group ($N_{sim}=8128), we calculate $f_{Var}(N_{sim})=\phi N_{sim}^\omega$
+XXX make the output labeled with phi and omega
+
+The output of the Fit_total_variants function are the parameters $\phi$ and $\omega$, respectively. The estimated parameters can then be used to estimate the number of variants per Kb within the region of interest, given the number of individuals to be simulated $N_{sim}$. 
+
+For example, to simulate the sample size observed in gnomAD for the African ancestry group ($N_{sim}=8128), we calculate $f_{Var}(N_{sim})=\phi N_{sim}^\omega$. This can be done with the *Total_number_variants* function. A value for phi, omega, and the sample size is required.
 
 
 ```{r }
 Total_number_variants(phi = 0.1638108, omega = 0.6248848, n = 8128)
 ```
 
-Above the number of variants was estimated using parameters fit with the target data. However, RAREsim also provides ancestry specific default parameters that can be used to estimate the number of variants per Kb.
-
 XXXX in the perfect world, this would show the fit of the function for the one block
+
+The number of variants per Kb was estimated using parameters fit with the target data. However, RAREsim also provides ancestry specific default parameters that can be used to estimate the number of variants per Kb.
 
 XXX add default parameters
 
@@ -73,13 +87,20 @@ Now this is the number of variants per Kb. The cM block we are simulating has a 
 19.029*Total_number_variants(phi = 0.1638108, omega = 0.6248848, n = 8128)
 ```
 
-At this point, we know how many variants we expect to see within the region. We now need to get the allele frequency spectrum (AFS) to calculate the proportion of variants at various minor allele counts.
+At this point, we know how many variants we expect to see within the region. We now need the allele frequency spectrum (AFS) to calculate the proportion of variants at various minor allele counts.
 
 ## Fitting the Allele Frequency Spectrum function
 
-The AFS function inputs allele frequency information and outputs estimates for $\alpha$, $\beta$, and $b$.
+The AFS function inputs allele frequency information and outputs estimates for $\alpha$, $\beta$, and $b$. The required AFS target data is a vector with the number of variants in each MAC bin:  
+MAC=1  
+MAC=2  
+MAC=3-5  
+MAC=6-10  
+MAC=11-20  
+MAC=21 - MAF = 0.5%  
+MAC = 0.5% - MAF = 1%  
 
-First, load in example data:
+Below we examine in the AFS target data for the African ancestry group.
 
 ```{r }
 # load the data
@@ -88,7 +109,7 @@ print(afs_afr)
 ```
 
 ```{r }
-Fit_AFS(afs_afr[2:8], 8128, 0.97)
+#Fit_AFS(afs_afr, 8128, 0.97)
 ```
 
 
@@ -101,14 +122,6 @@ Pruning variants required a MAC file fo the simulated data, and the expected num
 ### Expected Number of Variants with Default Parameter
 
 The default parameters can be used to estimate the number of variants within each MAC bin to use for simulation.
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
 
 ## Including Plots
 
