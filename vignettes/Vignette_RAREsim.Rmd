@@ -54,6 +54,8 @@ data("tot_num_var_afr")
 print(tot_num_var_afr)
 ```
 
+XXX figure out how to get rid of the weird row names
+
 The target data is used to estimate $\phi$ and $\omega$ within a least squares loss function, optimizing using sequential quadratic programming. It is implemented with the *Fit_total_variants* function.
 
 ```{r }
@@ -83,6 +85,8 @@ XXX add default parameters
 
 Now this is the number of variants per Kb. The cM block we are simulating has a total of 19,029 bp. Thus, to get the total expected number of variants in the region, we multiple the expected number of variants per Kb (Total_number_variants) by 19.029.
 
+XXX talk about capture/recapture?
+
 ```{r }
 19.029*Total_number_variants(phi = 0.1638108, omega = 0.6248848, n = 8128)
 ```
@@ -108,22 +112,63 @@ data("afs_afr")
 print(afs_afr)
 ```
 
+XXX again, remove row names
+
 ```{r }
-#Fit_AFS(afs_afr, 8128, 0.97)
+Fit_AFS(afs_afr, N = 8128, p_rv  = 0.97)
 ```
 
+XXX need to format the output with names
+
+## Expected Number of Variants per MAC bin
+
+Now that all the parameters have been fit, the expected number  of variants in each MAC bin can be extimated
+
+```{r }
+bin_estimates <- Expected_variants(alpha = 1.5313376 , beta = -0.3090162, b = 0.2926182, phi = 0.1638108 , omega = 0.6248848 , Ntar = 8128, Size = 19.029)
+print(bin_estimates)
+```
+
+
+XXXX need to remove the proportion... and allow this table to be  entered. If the proportion is removed, this will be what is input into the pruning function.
+
+XXXX right now the bins are hard coded in. Need to make them flexible to fit the rest of the functions
 
 ## Pruning Variants
 
 In order to use RAREsim to prune simulated data, genetic data must be simulated with HAPGEN2, with all bp added to the input haplotypes. This will simulate an abudance of rare variants to allow for variant pruning.
 
-Pruning variants required a MAC file fo the simulated data, and the expected number of variants within each MAC bin.
+Pruning variants required a MAC file fo the simulated data, and the expected number of variants within each MAC bin (what is produced fom the *Expected_variants* function).
 
-### Expected Number of Variants with Default Parameter
 
-The default parameters can be used to estimate the number of variants within each MAC bin to use for simulation.
+The pruning function inputs the name of the gzipped haplotype file, a MAC file from the haplotypes (i.e. number of alternate alleles  at each variant), and the expected number of variants per bin data  frame, with the bins defined. 
 
-## Including Plots
+```{r }
+bin_estimates <- bin_estimates[,-c(3)] ### I need to fix the output of this function
+bin_estimates
+```
+
+```{r }
+data("MAC_afr")
+dim(MAC_afr)
+head(MAC_afr)
+```
+
+When running the pruning function the haplotypes files will be  re-written. Thus, if the original files are needed, a copy needs to be made.
+
+```{r }
+#Prune(hap_file_name = '/location/of/haplotypes/.controls.haps.gz', MAC = MAC_afr, expected = bin_estimates)
+```
+
+XXXX the propblem with the current pruning function is that it does not work on my MAC. It calls the 'sed' command, which will only run on Linux/bash (with the same sintax at least).
+
+XXX thoughts on this? I have a few options
+1. If I can figure out the sed command on a mac, then I can just have people state if they are using a mac or Linux. Windows users???
+2. I can also have an option to load in the data here. It'll take a bit of time, but I know I can make it work.
+
+
+## Unrelated:
+Including Plots
 
 You can also embed plots, for example:
 

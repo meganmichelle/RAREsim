@@ -4,17 +4,17 @@
 \alias{Fit_AFS}
 \title{RAREsim}
 \usage{
-Fit_AFS(prop, N, per_rv)
+Fit_AFS(prop_df, N, p_rv)
 }
 \arguments{
-\item{prop}{Observed probabilities for each MAC bin}
+\item{prop_df}{data frame with 3 columns, Start, End (of MAC bin)  and proportion of variants in that MAC bin}
 
 \item{N}{Number of individuals in the target data}
 
-\item{per_rv}{percent of rare variants - just the sum of the proportions}
+\item{p_rv}{percent of rare variants - just the sum of the proportions}
 }
 \value{
-Vector of parameters - alpha, beta, and b
+Vector of parameters - alpha, beta, and b as well as  fitted values
 }
 \description{
 Simulate rare variant genetic data
