@@ -4,7 +4,16 @@
 \alias{Expected_variants}
 \title{RAREsim}
 \usage{
-Expected_variants(alpha, beta, b, phi, omega, Ntar, Size)
+Expected_variants(
+  alpha = NULL,
+  beta = NULL,
+  b = NULL,
+  phi = NULL,
+  omega = NULL,
+  Ntar,
+  Size,
+  pop = NULL
+)
 }
 \arguments{
 \item{alpha}{parameter from AFS funciton}
@@ -20,9 +29,11 @@ Expected_variants(alpha, beta, b, phi, omega, Ntar, Size)
 \item{Ntar}{sample size of the target data}
 
 \item{Size}{Simulation region sample size in Kb}
+
+\item{pop}{Ancestry population - needs to be specified ('AFR', 'NFE', 'EAS', or 'SAS') if using default}
 }
 \value{
-data frame with  the bins, proportion, and expected variants
+data frame with  the bins and expected variants
 }
 \description{
 Simulate rare variant genetic data

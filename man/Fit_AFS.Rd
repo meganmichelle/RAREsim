@@ -7,7 +7,7 @@
 Fit_AFS(prop_df, N, p_rv)
 }
 \arguments{
-\item{prop_df}{data frame with 3 columns, Start, End (of MAC bin)  and proportion of variants in that MAC bin}
+\item{prop_df}{data frame with 3 columns, Lower, Upper (of MAC bin)  and proportion of variants in that MAC bin}
 
 \item{N}{Number of individuals in the target data}
 

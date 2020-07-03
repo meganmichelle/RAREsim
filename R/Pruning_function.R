@@ -19,16 +19,17 @@
 #' @importFrom utils write.table
 #' @importFrom stats runif
 
-
-
-Prune <- function(hap_file_name, MAC, expected){
+Pruning_function <- function(hap_file_name, MAC, expected, mac){
   rem_all<-c()
   change_all <-  c() 
   if(length(which(MAC$V1>0))<sum(expected$Expected_var)){
     print('Error, not enough rare alleles')
   }
+  MAC$num <-  1:nrow(MAC)
   for(k in nrow(expected):1){
-      tmp <-  MAC[which(MAC$V1 >= expected$Start[k] & MAC$V1 <= expected$End[k]),]
+      tmp <-  MAC[which(MAC$V1 >= expected$Lower[k] & MAC$V1 <= expected$Upper[k]),]
+      tmp <- as.data.frame(tmp)
+      colnames(tmp)[1] <- 'V1'
         ##### if there are not any SNVs in the bin, tmp is all NA's...
       n1 <- nrow(tmp)
       expect <- expected$Expected_var[k]
@@ -56,7 +57,7 @@ Prune <- function(hap_file_name, MAC, expected){
           p1 <- n2/nrow(rem_all)  ### this is the proportion from rem_all
           rem_all$rd <- runif(nrow(rem_all))
           to_change <- rem_all[which(rem_all$rd  <= p1),]
-          mac_range <-  c(expected$Start[k]:expected$End[k])
+          mac_range <-  c(expected$Lower[k]:expected$Upper[k])
           to_change$new_MAC <- sample(mac_range, nrow(to_change),
                                       replace = TRUE)
           ### change them within the MAC file.
@@ -102,11 +103,16 @@ Prune <- function(hap_file_name, MAC, expected){
         write.table(ref1, 'Text2add.txt', row.names = FALSE, 
                     col.names = FALSE, quote = FALSE)
         
+        
         torun <- paste0('printf "%s\n" "', n, 'r Text2add.txt" w | ed -s ', 
                         hap_file_name1)
         system(torun)
         #### and remove the 'orginal' line n
-        system(paste0('sed -i \'', n, 'd\' ', hap_file_name1))
+        if(mac == 'mac'){
+        system(paste0('gsed -i \'', n, 'd\' ', hap_file_name1))
+        }else{
+          system(paste0('sed -i \'', n, 'd\' ', hap_file_name1))
+        }
         }
      }
        
@@ -116,7 +122,13 @@ Prune <- function(hap_file_name, MAC, expected){
        write.table(todel, 'List2delete.sed', row.names = FALSE, 
                    col.names = FALSE, quote = FALSE)
        #### delete the entire list
-       torun <- paste0('sed -i -f List2delete.sed ', hap_file_name1)
+       
+       if(mac == 'mac'){
+         torun <- paste0('gsed -i -f List2delete.sed ', hap_file_name1)
+       }else{
+         torun <- paste0('sed -i -f List2delete.sed ', hap_file_name1)
+       }
+       
        system(torun)
        system(paste0('gzip ', hap_file_name1))
        return(nrow(rem_all))

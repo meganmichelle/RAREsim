@@ -2,9 +2,9 @@
 
 export(Expected_variants)
 export(Fit_AFS)
-export(Fit_total_variants)
-export(Prune)
-export(Total_number_variants)
+export(Fit_var_per_kb)
+export(Pruning_function)
+export(Variants_per_Kb)
 importFrom(nloptr,slsqp)
 importFrom(stats,runif)
 importFrom(utils,write.table)

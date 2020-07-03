@@ -2,9 +2,9 @@
 #'
 #' @docType data
 #'
-#' @usage data(tot_num_var_nfe)
+#' @usage data(var_per_kb_nfe)
 #'
-#' @format A data frame for the Non-Finnish European Total Number of Variants target data
+#' @format A data frame for the Non-Finnish European Variants per Kb target data
 #'
 #' @keywords datasets
 #'
@@ -14,4 +14,5 @@
 #'
 
 
-"tot_num_var_nfe"
+"var_per_kb_nfe"
+

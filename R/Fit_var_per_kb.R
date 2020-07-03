@@ -16,7 +16,7 @@
 
 #### need to go in and rename the different pieces of the function
 
-Fit_total_variants <- function(temp){
+Fit_var_per_kb <- function(temp){
   leastsquares <- function(tune){
     a <- tune[1]*(temp[,1]^(tune[2]))
     b <- a - temp[,2]
@@ -43,14 +43,16 @@ Fit_total_variants <- function(temp){
       ### optimize synonymous
       phi <- temp[which.max(temp[,1]),2]/(temp[which.max(temp[,1]),1])^omega
       tune <- c(phi, omega)
-      re_LS <- suppressMessages(slsqp(tune, fn = leastsquares, hin = hin.tune,
+      re_LS1 <- suppressMessages(slsqp(tune, fn = leastsquares, hin = hin.tune,
                                       control = list(xtol_rel = 1e-12)))
-      to_bind1 <- c(re_LS$par, re_LS$value )
+      to_bind1 <- c(re_LS1$par, re_LS1$value )
       re_tab1 <- rbind(re_tab1, to_bind1)
     }
-    re <-re_tab1[which.min(re_tab1[,3]),]
-    return(re[c(1:2)])
+    re_fin <-re_tab1[which.min(re_tab1[,3]),]
+    re_fin  <- as.vector(re_fin)
+    return(list( phi=re_fin[1], omega=re_fin[2]))
   }else{
-    return(re_LS$par)
+    return(list( phi=re_LS$par[1], omega=re_LS$par[2]))
+
   }
 }

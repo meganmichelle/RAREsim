@@ -2,7 +2,7 @@
 #'
 #' Simulate rare variant genetic data
 #'
-#' @param prop_df data frame with 3 columns, Start, End (of MAC bin)  and proportion of variants in that MAC bin
+#' @param prop_df data frame with 3 columns, Lower, Upper (of MAC bin)  and proportion of variants in that MAC bin
 #'
 #' @param N Number of individuals in the target data
 #'
@@ -27,9 +27,9 @@
 # 
 # 
 # mac <- as.data.frame(matrix(nrow = 7, ncol = 2))
-# colnames(mac) <- c('Start', 'End')
-# mac$Start <- c(1:3,6,11,21,(n05+1))
-# mac$End <- c(1:2,5,10,20,n05,n1)
+# colnames(mac) <- c('Lower', 'Upper')
+# mac$Lower <- c(1:3,6,11,21,(n05+1))
+# mac$Upper <- c(1:2,5,10,20,n05,n1)
 
 Fit_AFS <- function(prop_df, N, p_rv){ ### only works with N>2200
   
@@ -41,7 +41,7 @@ Fit_AFS <- function(prop_df, N, p_rv){ ### only works with N>2200
     return(h)
   }
 
-  c1 <- 1:prop_df$End[nrow(prop_df)] #### MACs to use in the function
+  c1 <- 1:prop_df$Upper[nrow(prop_df)] #### MACs to use in the function
   
   #suppressMessages()
   calc_prob_LS<-function(tune){
@@ -51,7 +51,7 @@ Fit_AFS <- function(prop_df, N, p_rv){ ### only works with N>2200
     b_mac <- b*alpha_mac
     all <- 0
     for(i in 1:nrow(prop_df)){
-      E <- sum(b_mac[prop_df$Start[i]:prop_df$End[i]])
+      E <- sum(b_mac[prop_df$Lower[i]:prop_df$Upper[i]])
       O <- prop_df$prop[i]
       c <- (E-O)^2
       all <- all+c
@@ -69,16 +69,16 @@ Fit_AFS <- function(prop_df, N, p_rv){ ### only works with N>2200
   re$prop <- '.'
   colnames(re)[3] <- 'Fitted_prop'
   
-  fit <- as.data.frame(matrix(nrow =  1,  ncol = prop_df$End[nrow(prop_df)]))
+  fit <- as.data.frame(matrix(nrow =  1,  ncol = prop_df$Upper[nrow(prop_df)]))
   
-  for(i in 1:prop_df$End[nrow(prop_df)]){
+  for(i in 1:prop_df$Upper[nrow(prop_df)]){
     fit[,i] <- b/((S$par[2]+i)^S$par[1])
   }
   
   for(i in 1:nrow(re)){
-  re$Fitted_prop[i] <- sum(fit[,c(re$Start[i]:re$End[i])])
+  re$Fitted_prop[i] <- sum(fit[,c(re$Lower[i]:re$Upper[i])])
   }
   
-  return(list(parameters = c(S$par[2], S$par[1], b), Fitted_results = re))
+  return(list(alpha = S$par[1], beta = S$par[2], b = b, Fitted_results = re))
   
 }
