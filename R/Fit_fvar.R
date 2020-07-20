@@ -16,7 +16,7 @@
 
 #### need to go in and rename the different pieces of the function
 
-Fit_var_per_kb <- function(temp){
+Fit_fvar <- function(temp){
   leastsquares <- function(tune){
     a <- tune[1]*(temp[,1]^(tune[2]))
     b <- a - temp[,2]

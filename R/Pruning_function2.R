@@ -21,7 +21,8 @@
 #' @importFrom utils write.table
 #' @importFrom stats runif
 
-Pruning_function <- function(hap_file_name, MAC, expected, computer_type){
+
+Pruning_function2 <- function(hap_file_name, MAC, expected, computer_type){
   rem_all<-c()
   change_all <-  c() 
   if(length(which(MAC$V1>0))<sum(expected$Expected_var)){
@@ -75,7 +76,15 @@ Pruning_function <- function(hap_file_name, MAC, expected, computer_type){
   system(command_unzip)
   hap_file_name1 <- as.character(hap_file_name)
   hap_file_name1 <- substr(hap_file_name1, 1, (nchar(hap_file_name1)-3))
+  
+  con1 <- hap_file_name1
+  con2 <- paste0(hap_file_name1, '_new.haps')
+  lin_nos <- change_all$num
+
+  
      if(length(change_all)>0){
+       
+       new <- as.data.frame(matrix(nrow=nrow(change_all),  ncol = 113770))
         ##### change all: MAC, row #, draw, new MAC
         for(ch in 1:nrow(change_all)){
           
@@ -95,30 +104,37 @@ Pruning_function <- function(hap_file_name, MAC, expected, computer_type){
         aa_n <- sample(aa, k)
         
         #### and now make a new row to insert into the file
-        ref <- seq(0, length(re)) ### not sure this works
+        ref <- rep(0,length(re)) 
         ref[aa_n] <- 1
         
-        ##### format to write into the file
-        ref1 <- paste(ref, collapse = ' ')
         
         #### write to a new file
-        write.table(ref1, 'Text2add.txt', row.names = FALSE, 
-                    col.names = FALSE, quote = FALSE)
+
+        new[ch,] <- ref
         
-        
-        torun <- paste0('printf "%s\n" "', n, 'r Text2add.txt" w | ed -s ', 
-                        hap_file_name1)
-        system(torun)
         #### and remove the 'orginal' line n
-        if(computer_type == 'mac'){
-        system(paste0('gsed -i \'', n, 'd\' ', hap_file_name1))
-        }else{
-          system(paste0('sed -i \'', n, 'd\' ', hap_file_name1))
         }
-        }
-     }
        
-       ##### this needs to work witth the zipped file!
+       #### Rob's code was  wayyyy faster
+       
+       f3 = file("test_full_text2add1.txt", "w")
+       for (i in 1:nrow(new)){
+         ref1 <- paste(new[i,], collapse = ' ')
+         write(ref1, f3)
+       }
+       close(f3)
+       
+       repl_lines = readLines("test_full_text2add1.txt")
+       
+       system.time(m_update(con1, con2, repl_lines, line_nos  =  lin_nos))
+       
+     }else{
+       system(paste0('cp ', con1, ' ', con2))
+     }
+  #### copy the original ones if nothing to change??
+  
+       ####  then  go in and remove the other  lines
+      
        todel <- paste(rem_all$num, collapse = 'd; ')
        todel <- paste0(todel,'d')
        write.table(todel, 'List2delete.sed', row.names = FALSE, 
@@ -126,14 +142,15 @@ Pruning_function <- function(hap_file_name, MAC, expected, computer_type){
        #### delete the entire list
        
        if(computer_type == 'mac'){
-         torun <- paste0('gsed -i -f List2delete.sed ', hap_file_name1)
+         torun <- paste0('gsed -i -f List2delete.sed ', con2)
        }else{
-         torun <- paste0('sed -i -f List2delete.sed ', hap_file_name1)
+         torun <- paste0('sed -i -f List2delete.sed ', con2)
        }
        
        system(torun)
-       system(paste0('gzip ', hap_file_name1))
+       system(paste0('gzip ', con2))
        return(nrow(rem_all))
 }
+
 
 
