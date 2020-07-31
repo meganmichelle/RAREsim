@@ -2,23 +2,25 @@
 #'
 #' Simulate rare variant genetic data
 #'
-#' @param alpha parameter from AFS funciton
+#' @param alpha AFS funciton parameter alpha
 #' 
-#' @param beta another parameter from AFS funciton
+#' @param beta AFS funciton parameter beta
 #'  
-#' @param b final parameter from AFS funciton
+#' @param b AFS funciton parameter b
 #'   
-#' @param phi parameter from total variants funciton
+#' @param phi Variants per Kb funciton parameter phi
 #' 
-#' @param omega other parameter from total variants funciton
+#' @param omega Variants per Kb funciton parameter omega
 #' 
-#' @param Ntar sample size of the target data
+#' @param mac The MAC bins to use, with lower and upper boundaries defined
+#' 
+#' @param N sample size of the target data
 #' 
 #' @param Size Simulation region sample size in Kb
 #' 
 #' @param pop Ancestry population - needs to be specified ('AFR', 'NFE', 'EAS', or 'SAS') if using default
 #'
-#' @return data frame with  the bins and expected variants
+#' @return data frame with the MAC bins and expected variants
 #'
 #' @author Megan M Null, \email{megan.null@ucdenver.edu}
 #' 
@@ -30,9 +32,25 @@
 #'
 
 Expected_variants <- function(alpha   = NULL, beta = NULL, b = NULL,
-                              phi = NULL, omega = NULL, Ntar, Size, pop = NULL){
+                              phi = NULL, omega = NULL, N, Size, pop = NULL,
+                              mac){
+  
+  ### columns need to be names lower and upper
+   if((colnames(mac)[1] == 'Lower') == FALSE | (colnames(mac)[2]  == 'Upper') == FALSE){
+     stop('mac files needs to have column names Lower and Upper')
+    }
+  
+  ## mac needs  to have numeric values
+  if((is.numeric(mac$Lower) ==  FALSE) | (is.numeric(mac$Upper) == FALSE)){
+    stop('mac columns need to be numberic')
+  }
+  
+  ### check that ALL parameters are null and a population specified
+  if(is.null(alpha) & is.null(pop)){
+    stop('a population must be specified if using default parameters')
+  }
 
-  if(Ntar > 125000){
+  if(N > 125000){
     warning('We do not currently recommend simulating sample sizes over 125,000')
   }
   if(is.null(alpha)){
@@ -77,27 +95,27 @@ Expected_variants <- function(alpha   = NULL, beta = NULL, b = NULL,
     }
   }
   
-  m <- floor(Ntar*2*0.01) ### RV MAC in the target data
+  m <- floor(N*2*0.01) ### RV MAC in the target data
   fit <- as.data.frame(matrix(nrow=1, ncol = m))
   
   for(i in 1:m){
     fit[,i] <- b/((beta+i)^alpha)
   }
   
-  #### add the loop matrix here?? that might be easiest
-  loop <- as.data.frame(matrix(nrow=7,  ncol = 3))
-  colnames(loop) <- c('Lower', 'Upper', 'Prop')
-  loop$Lower <- c(1,2,3,6,11,21,m/2)
-  loop$Upper <- c(1,2,5,10,20,((m/2)+1),m)
+
+  mac$Prop <- '.'
+
   
-  for(k in 1:nrow(loop)){
-    loop$Prop[k] <- sum(fit[1,c(loop$Lower[k]:loop$Upper[k])])
+  for(k in 1:nrow(mac)){
+    mac$Prop[k] <- sum(fit[1,c(mac$Lower[k]:mac$Upper[k])])
   }
+  mac$Prop <- as.numeric(as.character(mac$Prop))
   
-  loop$Expected_var <- (Size)*(phi*Ntar^omega)*loop$Prop
   
-  loop <- loop[,c(1,2,4)]
+  mac$Expected_var <- Size*(phi*N^omega)*mac$Prop
   
-  return(loop)
+  mac <- mac[,c(1,2,4)]
+  
+  return(mac)
 }
 

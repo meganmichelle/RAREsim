@@ -16,7 +16,7 @@ m_update(con1, con2, repl_lines, line_nos)
 \item{line_nos}{line numbers to be  replaces}
 }
 \value{
-Number of variants pruned
+Text stating what has been accomlished
 }
 \description{
 Simulate rare variant genetic data

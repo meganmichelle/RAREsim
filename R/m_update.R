@@ -10,7 +10,7 @@
 #'
 #' @param line_nos line numbers to be  replaces
 #'
-#' @return Number of variants pruned
+#' @return Text stating what has been accomlished
 #'
 #' @author Megan M Null, \email{megan.null@ucdenver.edu}
 #' 

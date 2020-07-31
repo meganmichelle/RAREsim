@@ -10,30 +10,33 @@ Expected_variants(
   b = NULL,
   phi = NULL,
   omega = NULL,
-  Ntar,
+  N,
   Size,
-  pop = NULL
+  pop = NULL,
+  mac
 )
 }
 \arguments{
-\item{alpha}{parameter from AFS funciton}
+\item{alpha}{AFS funciton parameter alpha}
 
-\item{beta}{another parameter from AFS funciton}
+\item{beta}{AFS funciton parameter beta}
 
-\item{b}{final parameter from AFS funciton}
+\item{b}{AFS funciton parameter b}
 
-\item{phi}{parameter from total variants funciton}
+\item{phi}{Variants per Kb funciton parameter phi}
 
-\item{omega}{other parameter from total variants funciton}
+\item{omega}{Variants per Kb funciton parameter omega}
 
-\item{Ntar}{sample size of the target data}
+\item{N}{sample size of the target data}
 
 \item{Size}{Simulation region sample size in Kb}
 
 \item{pop}{Ancestry population - needs to be specified ('AFR', 'NFE', 'EAS', or 'SAS') if using default}
+
+\item{mac}{The MAC bins to use, with lower and upper boundaries defined}
 }
 \value{
-data frame with  the bins and expected variants
+data frame with the MAC bins and expected variants
 }
 \description{
 Simulate rare variant genetic data

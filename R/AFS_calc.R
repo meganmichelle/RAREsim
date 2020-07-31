@@ -2,17 +2,17 @@
 #'
 #' Simulate rare variant genetic data
 #'
-#' @param alpha Observed probabilities for each MAC bin
+#' @param alpha AFS function parameter alpha
 #'
-#' @param beta Number of individuals in the target data
+#' @param beta AFS function parameter beta
 #'
-#' @param b percent of rare variants - just the sum of the proportions
+#' @param b AFS function parameter b
 #' 
 #' @param mac The MAC bins to use, with lower and upper boundaries defined
 #' 
-#' @param pop The population -  specified when using default  parameters
+#' @param pop The population - specified when using default parameters
 #'
-#' @return data frame with the MAC bins provided and proportion of variants in  each bin
+#' @return data frame with the MAC bins provided and proportion of variants in each bin
 #'
 #' @author Megan M Null, \email{megan.null@ucdenver.edu}
 #' 
@@ -21,9 +21,24 @@
 #'
 #' @export
 #' 
-#'
 
 AFS_calc <- function(alpha=NULL, beta=NULL, b=NULL, mac, pop=NULL){
+  
+  if((colnames(mac)[1] == 'Lower') == FALSE | (colnames(mac)[2]  == 'Upper') == FALSE){
+    stop('mac files needs to have column names Lower and Upper')
+  }
+  
+  if((is.numeric(mac$Lower) ==  FALSE) | (is.numeric(mac$Upper) == FALSE)){
+    stop('mac columns need to be numberic')
+  }
+  
+  ### check that ALL parameters are null and a population specified
+  if(is.null(alpha) & is.null(pop)){
+    stop('a population must be specified if using default parameters')
+  }
+
+  ####  make sure the option for the population are just afr, eas,  nfe, and  sas?
+  
   if(is.null(alpha)){
     if(pop == 'AFR'){
       alpha = 1.5882
@@ -52,6 +67,7 @@ AFS_calc <- function(alpha=NULL, beta=NULL, b=NULL, mac, pop=NULL){
   for(i in 1:mac$Upper[nrow(mac)]){
     fit[,i] <- b/((beta+i)^alpha)
   }
+  
   
   re  <- mac
   re$Fitted_prop <- '.'

@@ -7,18 +7,18 @@
 AFS_calc(alpha = NULL, beta = NULL, b = NULL, mac, pop = NULL)
 }
 \arguments{
-\item{alpha}{Observed probabilities for each MAC bin}
+\item{alpha}{AFS function parameter alpha}
 
-\item{beta}{Number of individuals in the target data}
+\item{beta}{AFS function parameter beta}
 
-\item{b}{percent of rare variants - just the sum of the proportions}
+\item{b}{AFS function parameter b}
 
 \item{mac}{The MAC bins to use, with lower and upper boundaries defined}
 
-\item{pop}{The population -  specified when using default  parameters}
+\item{pop}{The population - specified when using default parameters}
 }
 \value{
-data frame with the MAC bins provided and proportion of variants in  each bin
+data frame with the MAC bins provided and proportion of variants in each bin
 }
 \description{
 Simulate rare variant genetic data

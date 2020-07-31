@@ -4,7 +4,7 @@
 \alias{Fit_AFS}
 \title{RAREsim}
 \usage{
-Fit_AFS(prop_df, N, p_rv)
+Fit_AFS(prop_df, N, p_rv = NULL)
 }
 \arguments{
 \item{prop_df}{data frame with 3 columns, Lower, Upper (of MAC bin)  and proportion of variants in that MAC bin}

@@ -2,7 +2,7 @@
 #'
 #' Simulate rare variant genetic data
 #'
-#' @param temp A data frame with the first column sample size and the second variants per Kb
+#' @param to_fit A data frame with the first column sample size and the second variants per Kb,  both numeric
 #'
 #' @return Vector of parameters - phi and omega
 #'
@@ -16,10 +16,15 @@
 
 #### need to go in and rename the different pieces of the function
 
-Fit_fvar <- function(temp){
+Fit_fvar <- function(to_fit){
+  
+  if(is.numeric(to_fit[,1]) == FALSE | is.numeric(to_fit[,2]) == FALSE){
+    stop('columns needs to  be numeric')
+  }
+  
   leastsquares <- function(tune){
-    a <- tune[1]*(temp[,1]^(tune[2]))
-    b <- a - temp[,2]
+    a <- tune[1]*(to_fit[,1]^(tune[2]))
+    b <- a - to_fit[,2]
     c <- b^2
     d <- sum(c)
     return(d)
@@ -32,16 +37,17 @@ Fit_fvar <- function(temp){
     h[3] <- 1 - x[2] ### omega less than 1
     return(h)
   } 
-  ### optimize synonymous
-  phi <- temp[which.max(temp[,1]),2]/(temp[which.max(temp[,1]),1])^0.45
+  
+  ### define the starting value for phi
+  phi <- to_fit[which.max(to_fit[,1]),2]/(to_fit[which.max(to_fit[,1]),1])^0.45
   tune <- c(phi, 0.45)
   re_LS <- suppressMessages(slsqp(tune, fn = leastsquares, hin = hin.tune,
                                   control = list(xtol_rel = 1e-12)))
   if(re_LS$value > 1000){
     re_tab1<-c()
     for(omega in c(seq(0.15,0.65, by=0.1))){
-      ### optimize synonymous
-      phi <- temp[which.max(temp[,1]),2]/(temp[which.max(temp[,1]),1])^omega
+      ### optimize with different values of omega
+      phi <- to_fit[which.max(to_fit[,1]),2]/(to_fit[which.max(to_fit[,1]),1])^omega
       tune <- c(phi, omega)
       re_LS1 <- suppressMessages(slsqp(tune, fn = leastsquares, hin = hin.tune,
                                       control = list(xtol_rel = 1e-12)))
@@ -53,6 +59,5 @@ Fit_fvar <- function(temp){
     return(list( phi=re_fin[1], omega=re_fin[2]))
   }else{
     return(list( phi=re_LS$par[1], omega=re_LS$par[2]))
-
   }
 }

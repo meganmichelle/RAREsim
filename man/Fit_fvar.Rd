@@ -4,10 +4,10 @@
 \alias{Fit_fvar}
 \title{RAREsim}
 \usage{
-Fit_fvar(temp)
+Fit_fvar(to_fit)
 }
 \arguments{
-\item{temp}{A data frame with the first column sample size and the second variants per Kb}
+\item{to_fit}{A data frame with the first column sample size and the second variants per Kb,  both numeric}
 }
 \value{
 Vector of parameters - phi and omega

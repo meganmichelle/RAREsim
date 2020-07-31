@@ -8,7 +8,7 @@
 #'
 #' @param expected dataframe of expected number of variants per bin - as well as bin boundaries
 #'
-#' @param computer_type Specify is a mac is being used
+#' @param sed_or_gsed  Specify if gsed is loaded onto computer instead of sed
 #'
 #' @return Number of variants pruned
 #'
@@ -21,7 +21,30 @@
 #' @importFrom utils write.table
 #' @importFrom stats runif
 
-Pruning_function <- function(hap_file_name, MAC, expected, computer_type){
+Pruning_function <- function(hap_file_name, MAC, expected, sed_or_gsed = NULL){
+  
+  if(is.character(hap_file_name)==FALSE){
+    stop('hap_file_names needs to be  a character')
+  }
+  
+  if(is.character(hap_file_name)==FALSE){
+    stop('hap_file_names needs to be  a character')
+  }
+  if((substr(hap_file_name, (nchar(hap_file_name)-2), nchar(hap_file_name)) == '.gz') == FALSE){
+    stop('A gzipped haplotype file is required. String must end in .gz')
+  }
+  
+  if((ncol(expected)  == 3) ==FALSE){
+    stop('The expected data frame requries 3 columns.')
+  }
+  
+  if(is.numeric(MAC[,1])==FALSE){
+    stop('The MAC file is required to be numeric')
+  }
+  
+  if(is.null(sed_or_gsed)){
+    sed_or_gsed <- 'sed'
+  }
   rem_all<-c()
   change_all <-  c() 
   if(length(which(MAC$V1>0))<sum(expected$Expected_var)){
@@ -110,7 +133,7 @@ Pruning_function <- function(hap_file_name, MAC, expected, computer_type){
                         hap_file_name1)
         system(torun)
         #### and remove the 'orginal' line n
-        if(computer_type == 'mac'){
+        if(sed_or_gsed == 'gsed'){
         system(paste0('gsed -i \'', n, 'd\' ', hap_file_name1))
         }else{
           system(paste0('sed -i \'', n, 'd\' ', hap_file_name1))
@@ -125,7 +148,7 @@ Pruning_function <- function(hap_file_name, MAC, expected, computer_type){
                    col.names = FALSE, quote = FALSE)
        #### delete the entire list
        
-       if(computer_type == 'mac'){
+       if(sed_or_gsed == 'gsed'){
          torun <- paste0('gsed -i -f List2delete.sed ', hap_file_name1)
        }else{
          torun <- paste0('sed -i -f List2delete.sed ', hap_file_name1)

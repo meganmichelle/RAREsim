@@ -19,21 +19,14 @@
 #' @importFrom nloptr slsqp
 #'
 
-### prop is the proportion of each bin (7 proportions)
-### N is the number of samples
-# n05 <- floor(N*2*.005) ### MAF = 0.5%
-# n1 <- floor(N*2*.01) ### MAF = 1%
-# 
-# 
-# 
-# mac <- as.data.frame(matrix(nrow = 7, ncol = 2))
-# colnames(mac) <- c('Lower', 'Upper')
-# mac$Lower <- c(1:3,6,11,21,(n05+1))
-# mac$Upper <- c(1:2,5,10,20,n05,n1)
+Fit_AFS <- function(prop_df, N, p_rv = NULL){ ### only works with N>2200
 
-Fit_AFS <- function(prop_df, N, p_rv){ ### only works with N>2200
   
   prop_df$prop <- (as.numeric(as.character(prop_df$prop))) 
+  
+  if(is.null(p_rv)){
+    p_rv <- sum(prop_df$prop)
+  }
   
   hin.tune <- function(x) {
     h <- numeric(1)

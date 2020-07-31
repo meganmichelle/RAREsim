@@ -4,7 +4,7 @@
 \alias{Pruning_function}
 \title{RAREsim}
 \usage{
-Pruning_function(hap_file_name, MAC, expected, computer_type)
+Pruning_function(hap_file_name, MAC, expected, sed_or_gsed = NULL)
 }
 \arguments{
 \item{hap_file_name}{Name of the haplotype file to prune (gzipped: end in .gz)}
@@ -13,7 +13,7 @@ Pruning_function(hap_file_name, MAC, expected, computer_type)
 
 \item{expected}{dataframe of expected number of variants per bin - as well as bin boundaries}
 
-\item{computer_type}{Specify is a mac is being used}
+\item{sed_or_gsed}{Specify if gsed is loaded onto computer instead of sed}
 }
 \value{
 Number of variants pruned
