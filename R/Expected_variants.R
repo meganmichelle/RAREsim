@@ -12,9 +12,9 @@
 #' 
 #' @param omega Variants per Kb funciton parameter omega
 #' 
-#' @param mac The MAC bins to use, with lower and upper boundaries defined
+#' @param mac The MAC bins to use, with lower and upper boundaries defined. Only define for rare variants
 #' 
-#' @param N sample size of the target data
+#' @param N sample size to simulate
 #' 
 #' @param Size Simulation region sample size in Kb
 #' 
@@ -26,14 +26,17 @@
 #' 
 #' @keywords RAREsim
 #'
-#'
 #' @export
-#'
-#'
+
 
 Expected_variants <- function(alpha   = NULL, beta = NULL, b = NULL,
                               phi = NULL, omega = NULL, N, Size, pop = NULL,
                               mac){
+  
+  if((is.numeric(alpha) == FALSE) | (is.numeric(beta) == FALSE) |
+    (is.numeric(b) == FALSE) | (is.numeric(phi) == FALSE) | (is.numeric(omega) == FALSE)){
+    stop('All parameters are required to be numeric')
+  }
   
   ### columns need to be names lower and upper
    if((colnames(mac)[1] == 'Lower') == FALSE | (colnames(mac)[2]  == 'Upper') == FALSE){

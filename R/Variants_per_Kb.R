@@ -22,6 +22,13 @@
 #'
 
 Variants_per_Kb<-function(phi=NULL, omega=NULL, n,  pop=NULL){
+  if(n>125,000){
+    warning('We currently do not recommend simulating sample sizes over 125,000')
+  }
+  if(is.null(alpha) & is.null(pop)){
+    stop('a population must be specified if using default parameters')
+  }
+  
   if(is.null(phi)){
     if(pop == 'AFR'){
       phi = 0.1576
