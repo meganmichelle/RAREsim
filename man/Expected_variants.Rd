@@ -27,13 +27,13 @@ Expected_variants(
 
 \item{omega}{Variants per Kb funciton parameter omega}
 
-\item{N}{sample size of the target data}
+\item{N}{sample size to simulate}
 
 \item{Size}{Simulation region sample size in Kb}
 
 \item{pop}{Ancestry population - needs to be specified ('AFR', 'NFE', 'EAS', or 'SAS') if using default}
 
-\item{mac}{The MAC bins to use, with lower and upper boundaries defined}
+\item{mac}{The MAC bins to use, with lower and upper boundaries defined. Only define for rare variants}
 }
 \value{
 data frame with the MAC bins and expected variants

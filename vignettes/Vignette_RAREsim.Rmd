@@ -125,7 +125,14 @@ mac <- afs_afr[,c(1:2)]
 mac
 ```
 
+```{r }
+mac$Lower <- as.numeric(as.character(mac$Lower))
+mac$Upper <- as.numeric(as.character(mac$Upper))
+mac
+```
+
 Using the MAC bins as input and specifying an African ancestry, the default parameters are used below to estimate the proportion of variants within each bin.
+
 
 ```{r }
 AFS_calc(mac = mac, pop = 'AFR')
@@ -134,11 +141,7 @@ print(mac)
 
 ## Expected Number of Variants per MAC bin
 
-```{r }
-mac$Lower <- as.numeric(as.character(mac$Lower))
-mac$Upper <- as.numeric(as.character(mac$Upper))
-mac
-```
+
 
 Using the parameter estimates from the *Variants per Kb* and *AFS* functions, the expected number  of variants in each MAC bin can be estimated. Direction using the estimated parameters is demonstrated below.
 

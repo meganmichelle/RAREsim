@@ -4,7 +4,7 @@
 \alias{Pruning_function}
 \title{RAREsim}
 \usage{
-Pruning_function(hap_file_name, MAC, expected, sed_or_gsed = NULL)
+Pruning_function(hap_file_name, MAC, expected, sed_or_gsed)
 }
 \arguments{
 \item{hap_file_name}{Name of the haplotype file to prune (gzipped: end in .gz)}

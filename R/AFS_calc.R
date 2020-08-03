@@ -24,10 +24,10 @@
 
 AFS_calc <- function(alpha=NULL, beta=NULL, b=NULL, mac, pop=NULL){
   
-  if((is.numeric(alpha) == FALSE) | (is.numeric(beta) == FALSE) |
-     (is.numeric(b) == FALSE)){
-    stop('All parameters are required to be numeric')
-  }
+  # if((is.numeric(alpha) == FALSE) | (is.numeric(beta) == FALSE) |
+  #    (is.numeric(b) == FALSE)){
+  #   stop('All parameters are required to be numeric')
+  # }
   
   if((colnames(mac)[1] == 'Lower') == FALSE | (colnames(mac)[2]  == 'Upper') == FALSE){
     stop('mac files needs to have column names Lower and Upper')

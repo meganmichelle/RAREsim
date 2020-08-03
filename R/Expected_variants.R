@@ -33,11 +33,11 @@ Expected_variants <- function(alpha   = NULL, beta = NULL, b = NULL,
                               phi = NULL, omega = NULL, N, Size, pop = NULL,
                               mac){
   
-  if((is.numeric(alpha) == FALSE) | (is.numeric(beta) == FALSE) |
-    (is.numeric(b) == FALSE) | (is.numeric(phi) == FALSE) | (is.numeric(omega) == FALSE)){
-    stop('All parameters are required to be numeric')
-  }
-  
+  # if((is.numeric(alpha) == FALSE) | (is.numeric(beta) == FALSE) |
+  #   (is.numeric(b) == FALSE) | (is.numeric(phi) == FALSE) | (is.numeric(omega) == FALSE)){
+  #   stop('All parameters are required to be numeric')
+  # }
+  # 
   ### columns need to be names lower and upper
    if((colnames(mac)[1] == 'Lower') == FALSE | (colnames(mac)[2]  == 'Upper') == FALSE){
      stop('mac files needs to have column names Lower and Upper')
