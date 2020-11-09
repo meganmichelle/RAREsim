@@ -19,10 +19,18 @@
 #' @importFrom nloptr slsqp
 #'
 
-Fit_AFS <- function(prop_df, N, p_rv = NULL){ ### only works with N>2200
+Fit_afs <- function(prop_df, N, p_rv = NULL){ ### only works with N>2200
 
   
-  prop_df$prop <- (as.numeric(as.character(prop_df$prop))) 
+  prop_df$prop <- (as.numeric(as.character(prop_df$prop)))
+  
+  if(anyNA(prop_df$prop) == TRUE){
+    stop('proportions need to be numeric with no NA values')
+  }
+  
+  if(is.numeric(N)==FALSE){
+    stop('N needs to be a number')
+  }
   
   if(is.null(p_rv)){
     p_rv <- sum(prop_df$prop)
@@ -60,7 +68,7 @@ Fit_AFS <- function(prop_df, N, p_rv = NULL){ ### only works with N>2200
 
   re <- prop_df
   re$prop <- '.'
-  colnames(re)[3] <- 'Fitted_prop'
+  colnames(re)[3] <- 'Prop'
   
   fit <- as.data.frame(matrix(nrow =  1,  ncol = prop_df$Upper[nrow(prop_df)]))
   
@@ -69,8 +77,10 @@ Fit_AFS <- function(prop_df, N, p_rv = NULL){ ### only works with N>2200
   }
   
   for(i in 1:nrow(re)){
-  re$Fitted_prop[i] <- sum(fit[,c(re$Lower[i]:re$Upper[i])])
+  re$Prop[i] <- sum(fit[,c(re$Lower[i]:re$Upper[i])])
   }
+  
+  re$Prop <- as.numeric(as.character(re$Prop))
   
   return(list(alpha = S$par[1], beta = S$par[2], b = b, Fitted_results = re))
   

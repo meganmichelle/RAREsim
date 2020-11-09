@@ -57,7 +57,7 @@ print(var_per_kb_afr, row.names  =  FALSE)
 The target data is used to estimate $\phi$ and $\omega$ within a least squares loss function, optimizing using sequential quadratic programming (SQP). This optimization is implemented via the *Fit_fvar* function.
 
 ```{r }
-nvar <- Fit_fvar(var_per_kb_afr)
+nvar <- Fit_nvariant(var_per_kb_afr)
 nvar
 ```
 
@@ -67,27 +67,27 @@ For example, to simulate the sample size observed in the target data, ($N_{sim}=
 
 
 ```{r }
-Variants_per_Kb(phi = nvar$phi, omega = nvar$omega, n = 8128)
+nvariant(phi = nvar$phi, omega = nvar$omega, n = 8128)
 ```
 
 Above, the number of variants per Kb was determined using parameters estimated from target data. However, RAREsim also provides ancestry specific default parameters that can be used instead. To use the default parameters,  the  ancestry must be specified: African (AFR), East Asian (EAS), Non-Finnish European (NFE), or South Asian (SAS).
 
 ```{r }
-Variants_per_Kb(n=8128, pop = 'AFR') 
+nvariant(n=8128, pop = 'AFR') 
 ```
 
 The example data here is  a cM block with 19,029 bp. Thus, to calculate the total expected number of variants in the region, we multiple the expected number of variants per Kb (*Variants_per_Kb*) by 19.029.
 
 
 ```{r }
-19.029*Variants_per_Kb(phi = 0.1638108, omega = 0.6248848, n = 8128)
+19.029*nvariant(phi = 0.1638108, omega = 0.6248848, n = 8128)
 ```
 
 At this point, we have estimated the total number of variants within the region. We now need to estimate parameters for the *Allele Frequency Spectrum (AFS)* function to estimate the proportion of variants within MAC bins.
 
 ## Fitting the Allele Frequency Spectrum function
 
-The *AFS* function inputs a MAC (*z*) and outputs the proportion of variants at MAC = z, ($f_{AFS}(z)$). This is done by estimating $\alpha$ and $\beta$ to optimize the function $f_{AFS}(z) = \frac{b}{(\beta+z)^{\alpha}}$. Here *b* ensures that the sum of the individual rare allele count proportions equals the total proportion of rare variants, $p_{rv}$.
+The *AFS* function inputs a MAC (*z*) and outputs the proportion of variants at MAC = z, ($f_{afs}(z)$). This is done by estimating $\alpha$ and $\beta$ to optimize the function $f_{afs}(z) = \frac{b}{(\beta+z)^{\alpha}}$. Here *b* ensures that the sum of the individual rare allele count proportions equals the total proportion of rare variants, $p_{rv}$.
 
 The *AFS* function inputs a data frame with the upper and lower boundaries for each bin and proportion of variants within each respective bin. The default bins used here and within the evaluation of RAREsim are: 
 
@@ -108,12 +108,13 @@ print(afs_afr)
 ```
 
 
-To fit the *AFS* function (*Fit_AFS*), RAREsim requires the data frame with MAC bins and proportion  of variants (shown above), the number of subjects  to  simulate $N$, and the total proportion of rare variants, $p_{rv}$. Here, we will simulate the sample size observed in gnomAD, $N = 8128$ with 97% of variants assumed to be rare, $p_{rv} = 0.97$.The function estimates the parameters alpha ($\alpha$), beta ($\beta$), and $b$, and includes the estimated proportion of variants based on calculations from the fitted parameters, as shown below. 
+To fit the *AFS* function (*Fit_afs*), RAREsim requires the data frame with MAC bins and proportion  of variants (shown above), the number of subjects  to  simulate $N$, and the total proportion of rare variants, $p_{rv}$. Here, we will simulate the sample size observed in gnomAD, $N = 8128$ with 97% of variants assumed to be rare, $p_{rv} = 0.97$.The function estimates the parameters alpha ($\alpha$), beta ($\beta$), and $b$, and includes the estimated proportion of variants based on calculations from the fitted parameters, as shown below. 
 
 
 ```{r }
-af <- Fit_AFS(prop_df = afs_afr, N = 8128, p_rv = 0.97)
+af <- Fit_afs(prop_df = afs_afr, N = 8128, p_rv = 0.97)
 print(af)
+#is.numeric(af$Fitted_results$Upper)
 ```
 
 
@@ -131,33 +132,50 @@ mac$Upper <- as.numeric(as.character(mac$Upper))
 mac
 ```
 
+The afs function can inputs the parameters alpha, beta, and b, along with the MAC bin endpoints. The output is the proportion of variants within each MAC bin.
+
+```{r }
+afs(alpha = af$alpha, beta = af$beta, b  = af$b,mac = mac)
+print(mac)
+```
+
+
 Using the MAC bins as input and specifying an African ancestry, the default parameters are used below to estimate the proportion of variants within each bin.
 
 
 ```{r }
-AFS_calc(mac = mac, pop = 'AFR')
+afs(mac = mac, pop = 'AFR')
 print(mac)
 ```
 
 ## Expected Number of Variants per MAC bin
 
-
-
-Using the parameter estimates from the *Variants per Kb* and *AFS* functions, the expected number  of variants in each MAC bin can be estimated. Direction using the estimated parameters is demonstrated below.
+Using the parameter estimates from the *Variants per Kb* and *AFS* functions, the expected number of variants in each MAC bin can be estimated. An example using the total number of varants and estimated proportion of variants per MAC bin is shown below.
 
 ```{r }
-bin_estimates <- Expected_variants(alpha = af$alpha , beta = af$beta, b = af$b, phi = nvar$phi , omega = nvar$omega , N = 8128, Size = 19.029, mac = mac)
-print(bin_estimates)
-```
-
-We can also estimate the number of variants per MAC bin using the default parameters, again  specifying  the ancestry population as AFR, EAS, NFE, or SAS. Here the default parameters for both the *AFS* and *Variants per Kb* functions were used.
-
-```{r }
-bin_estimates <- Expected_variants(pop='AFR' , N = 8128, Size = 19.029, mac=mac)
+bin_estimates <- Expected_variants(Total_num_var = 865.0633, mac_bin_prop = af$Fitted_results)
 print(bin_estimates)
 ```
 
 The output of the *Expected_variants* function is the exected number of variants in each MAC bin within the simulation region. This output (shown above) is input for the pruning function.
+
+We can also adjust the  *parameters*  within the functions, inside of the function to estimate the expected number of variants.
+
+#### Need to add in the parameters for afs function
+
+```{r }
+bin_estimates <- Expected_variants(Total_num_var = 19.029*nvariant(phi = 0.1638108, omega = 0.6248848, n = 8128), mac_bin_prop = afs(alpha = af$alpha, beta = af$beta, b  = af$b,mac = mac))
+print(bin_estimates)
+```
+
+
+Finally, we can also estimate the number of variants per MAC bin using the default parameters, again  specifying  the ancestry population as AFR, EAS, NFE, or SAS. Here the default parameters for both the *AFS* and *Variants per Kb* functions were used.
+
+```{r }
+bin_estimates <- Expected_variants(Total_num_var = 19.029*nvariant(phi = 0.1638108, omega = 0.6248848, n = 8128),mac_bin_prop = afs(mac = mac, pop = 'AFR'))
+print(bin_estimates)
+```
+
 
 ## Pruning Variants
 
@@ -166,9 +184,9 @@ In order to use RAREsim to prune simulated data, genetic data must be simulated 
 Below is an example MAC file created from the haplotypes simulated for the African ancestry group and the region of interest. Each row represents one bp in the haplotype file.
 
 ```{r }
-data("MAC_afr")
-dim(MAC_afr)
-head(MAC_afr)
+#data("MAC_afr")
+#dim(MAC_afr)
+#shead(MAC_afr)
 ```
 
 Pruning variants requires a MAC file from the simulated data, the expected number of variants within each MAC bin (product of the *Expected_variants* function),  and the name and location of the gzipped haplotype file. Additionally, here it is specified that the computer running the pruning algorithm is a mac.

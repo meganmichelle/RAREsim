@@ -21,7 +21,7 @@
 #'
 #'
 
-Variants_per_Kb<-function(phi=NULL, omega=NULL, n,  pop=NULL){
+nvariant<-function(phi=NULL, omega=NULL, n,  pop=NULL){
   if(n>125000){
     warning('We currently do not recommend simulating sample sizes over 125,000')
   }

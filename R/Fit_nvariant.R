@@ -16,7 +16,7 @@
 
 #### need to go in and rename the different pieces of the function
 
-Fit_fvar <- function(to_fit){
+Fit_nvariant <- function(to_fit){
   
   if(is.numeric(to_fit[,1]) == FALSE | is.numeric(to_fit[,2]) == FALSE){
     stop('columns needs to  be numeric')

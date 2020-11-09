@@ -4,36 +4,12 @@
 \alias{Expected_variants}
 \title{RAREsim}
 \usage{
-Expected_variants(
-  alpha = NULL,
-  beta = NULL,
-  b = NULL,
-  phi = NULL,
-  omega = NULL,
-  N,
-  Size,
-  pop = NULL,
-  mac
-)
+Expected_variants(Total_num_var, mac_bin_prop)
 }
 \arguments{
-\item{alpha}{AFS funciton parameter alpha}
+\item{Total_num_var}{estimated  number of variants  in the  region}
 
-\item{beta}{AFS funciton parameter beta}
-
-\item{b}{AFS funciton parameter b}
-
-\item{phi}{Variants per Kb funciton parameter phi}
-
-\item{omega}{Variants per Kb funciton parameter omega}
-
-\item{N}{sample size to simulate}
-
-\item{Size}{Simulation region sample size in Kb}
-
-\item{pop}{Ancestry population - needs to be specified ('AFR', 'NFE', 'EAS', or 'SAS') if using default}
-
-\item{mac}{The MAC bins to use, with lower and upper boundaries defined. Only define for rare variants}
+\item{mac_bin_prop}{The MAC bins to use, with lower and upper boundaries defined. Only define for rare variants}
 }
 \value{
 data frame with the MAC bins and expected variants

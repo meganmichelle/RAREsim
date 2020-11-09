@@ -22,12 +22,12 @@
 #' @export
 #' 
 
-AFS_calc <- function(alpha=NULL, beta=NULL, b=NULL, mac, pop=NULL){
+afs <- function(alpha=NULL, beta=NULL, b=NULL, mac, pop=NULL){
   
-  # if((is.numeric(alpha) == FALSE) | (is.numeric(beta) == FALSE) |
-  #    (is.numeric(b) == FALSE)){
+  # if(((pop==NULL)==FALSE)  & ((is.numeric(alpha) == FALSE) | (is.numeric(beta) == FALSE) |
+  #    (is.numeric(b) == FALSE))){
   #   stop('All parameters are required to be numeric')
-  # }
+  # } ###  This does not work!s
   
   if((colnames(mac)[1] == 'Lower') == FALSE | (colnames(mac)[2]  == 'Upper') == FALSE){
     stop('mac files needs to have column names Lower and Upper')
@@ -75,11 +75,13 @@ AFS_calc <- function(alpha=NULL, beta=NULL, b=NULL, mac, pop=NULL){
   
   
   re  <- mac
-  re$Fitted_prop <- '.'
+  re$Prop <- '.'
   
   for(i in 1:nrow(re)){
-    re$Fitted_prop[i] <- sum(fit[,c(re$Lower[i]:re$Upper[i])])
+    re$Prop[i] <- sum(fit[,c(re$Lower[i]:re$Upper[i])])
   }
+  
+  re$Prop <- as.numeric(as.character(re$Prop))
   
   return(re)
 }
