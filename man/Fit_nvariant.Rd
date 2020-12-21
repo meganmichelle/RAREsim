@@ -2,18 +2,19 @@
 % Please edit documentation in R/Fit_nvariant.R
 \name{Fit_nvariant}
 \alias{Fit_nvariant}
-\title{RAREsim}
+\title{Fit_nvariant}
 \usage{
-Fit_nvariant(to_fit)
+Fit_nvariant(Observed_variants_per_kb)
 }
 \arguments{
-\item{to_fit}{A data frame with the first column sample size and the second variants per Kb,  both numeric}
+\item{Observed_variants_per_kb}{A data frame with the first column sample size and the second variants per Kb,  both numeric}
 }
 \value{
 Vector of parameters - phi and omega
 }
 \description{
-Simulate rare variant genetic data
+This function takes Number of Variants target data and estimates parameters for the Number of Variants function
+A dataframe specifying the number of variants per Kb at various sample sizes is required to fit the data
 }
 \author{
 Megan M Null, \email{megan.null@ucdenver.edu}

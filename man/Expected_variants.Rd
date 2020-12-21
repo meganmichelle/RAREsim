@@ -2,7 +2,7 @@
 % Please edit documentation in R/Expected_variants.R
 \name{Expected_variants}
 \alias{Expected_variants}
-\title{RAREsim}
+\title{Expected Variants}
 \usage{
 Expected_variants(Total_num_var, mac_bin_prop)
 }
@@ -15,7 +15,8 @@ Expected_variants(Total_num_var, mac_bin_prop)
 data frame with the MAC bins and expected variants
 }
 \description{
-Simulate rare variant genetic data
+This function combines the Number of Variants and AFS functions to produces the expected number of variants per Kb in each MAC bin
+The output from the afs and nvariants functions can be used here
 }
 \author{
 Megan M Null, \email{megan.null@ucdenver.edu}

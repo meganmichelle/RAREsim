@@ -12,7 +12,7 @@
 #'
 #' @return Number of variants pruned
 #'
-#' @author Megan M Null, \email{megan.null@ucdenver.edu}
+#' @author Megan M Null, \email{mnull@collegeofidaho.edu}
 #' 
 #' @keywords RAREsim
 #'
@@ -21,7 +21,7 @@
 #' @importFrom utils write.table
 #' @importFrom stats runif
 
-Pruning_function <- function(hap_file_name, MAC, expected, sed_or_gsed = NULL){
+Pruning_function_old <- function(hap_file_name, MAC, expected, sed_or_gsed = NULL){
   
   rem_all<-c()
   change_all <-  c() 
@@ -69,6 +69,7 @@ Pruning_function <- function(hap_file_name, MAC, expected, sed_or_gsed = NULL){
           change_all<- rbind(change_all, to_change)
         }
   }
+  
   ##### here we are done with the theoretical pruning
   ##### now change the haplotypes
   ### First, the variants that change alternate alleles
@@ -83,8 +84,15 @@ Pruning_function <- function(hap_file_name, MAC, expected, sed_or_gsed = NULL){
           n <- change_all$num[ch] #### this is the line of interest
           k <- change_all$new_MAC[ch]
         
-        get_line <- paste0('sed -n \'', n, 'p;',
-                      (n+1),'q\' ', hap_file_name1)
+          
+        if(sed_or_gsed == 'gsed'){
+          get_line <- paste0('gsed -n \'', n, 'p;',
+                             (n+1),'q\' ', hap_file_name1)
+        }else{
+          get_line <- paste0('sed -n \'', n, 'p;',
+                             (n+1),'q\' ', hap_file_name1)
+        }
+        
         ri <- system(get_line, intern = TRUE)
         re <- unlist(strsplit(ri, split=" "))
         re <- as.numeric(as.character(re))
