@@ -1,11 +1,11 @@
 ---
-title: "RAREsim Vignette V2"
+title: "RAREsim Vignette"
 author: "Megan Null"
 output:
   rmarkdown::word_document
 vignette: >
   %\VignetteEngine{knitr::knitr}
-  %\VignetteIndexEntry{RAREsim Vignette V2}
+  %\VignetteIndexEntry{RAREsim Vignette}
   \usepackage[UTF-8]{inputenc}  
 ---
 This vigette describes how to use the RAREsim R package to simulate rare variant genetic data. 
