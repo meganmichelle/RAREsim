@@ -23,14 +23,12 @@ knitr::opts_chunk$set(echo = TRUE)
 library(RAREsim)
 ```
 
-The source code for all functions within the RAREsim package can be found at <https://github.com/meganmichelle/RAREsim_package>. The package currently must be downloaded through github using devtools.
+The source code for all functions within the RAREsim package can be found at <https://github.com/meganmichelle/RAREsim>. The package currently must be downloaded through github using devtools.
 
 RAREsim has three main steps: (1) simulate genetic data with an abundance of rare variants using [HAPGEN2](https://mathgen.stats.ox.ac.uk/genetics_software/hapgen/hapgen2.html) (Su, 2011), (2) estimate the expected number of variants in MAC bins, and (3)  probabilistically prune the rare variants to match the estimated number of variants in each MAC bin.
 
-<!-- The input simulation dataset is a sample of haplotypes (e.g. 1000 Genomes haplotypes (Genomes Project, et al., 2015)) with alternative alleles coded as 1 and all reference alleles, including sequencing bases that are not polymorphic in the input simulation dataset variants, coded as 0. Within HAPGEN2, the vast majority of simulated rare variants arise from a mutation from an all reference bp within the input simulated data. Thus, we add information at all bp, including bp with all reference alleles, to allow for an abundance of rare variants. -->
 
-
-An example simulation with HAPGEN2 can be found on the [RAREsim github page](https://github.com/meganmichelle/RAREsim/blob/master/HAPGEN2_simulation_example). By simulating with default parameters and input haplotypes with information at all sequencing bases, including monomorphic sites, HAPGEN2 simulates an abundance of rare variants.
+An example simulation with HAPGEN2 can be found on the [RAREsim Example Code github page](https://github.com/meganmichelle/RAREsim_Example). By simulating with default parameters and input haplotypes with information at all sequencing bases, including monomorphic sites, HAPGEN2 simulates an abundance of rare variants.
 
 In order to emulate real sequencing data, RAREsim prunes the simulated variants by returning all or a subset of alternate alleles back to reference. In order to prune, RAREsim first estimates the expected number of variants within MAC bins. The number of variants in each MAC bin can either estimated using default parameters, modifying default parameters, or fitting target data. If the exact sample size of observed sequencing data is to be simulated, the observed data can be matched directly. 
 
@@ -180,7 +178,7 @@ print(bin_estimates)
 
 
 
-In order to use RAREsim to prune simulated data, genetic data must be simulated with HAPGEN2 with all sequencing bases, including monomorphic variants, added to the input haplotypes. HAPGEN2 will simulate an abudance of rare variants to allow for variant pruning. Additionally, a MAC file (count of the number of alternate alleles at each bp) enables an efficient and fast pruning process. It is recommended to create the MAC file within the process of simulating data with HAPGEN2, as shown in the example code that is available on the [RAREsim github page](https://github.com/meganmichelle/RAREsim/blob/master/HAPGEN2_simulation_example). 
+In order to use RAREsim to prune simulated data, genetic data must be simulated with HAPGEN2 with all sequencing bases, including monomorphic variants, added to the input haplotypes. HAPGEN2 will simulate an abudance of rare variants to allow for variant pruning. Additionally, a MAC file (count of the number of alternate alleles at each bp) enables an efficient and fast pruning process. It is recommended to create the MAC file within the process of simulating data with HAPGEN2, as shown in the example code that is available on the [RAREsim Example code github page](https://github.com/meganmichelle/RAREsim_Example). 
 
 Below is an example MAC file created from the haplotypes simulated for the African ancestry group and the region of interest. Each row represents one bp in the haplotype file.
 
@@ -203,20 +201,6 @@ The output from *Pruning_info* includes the variants to prune, notated by what l
 
 #### 2) Pruning Implementation
 
-There is an example on the [RAREsim github page](https://github.com/meganmichelle/RAREsim/blob/master/HAPGEN2_simulation_example) that shows how to implement the pruning.
+There is (or soon will be) an example on the [RAREsim github page](https://github.com/meganmichelle/RAREsim/blob/master/HAPGEN2_simulation_example) that shows how to implement the pruning.
 
-This requires the haplotype and legend files and the output from the *Pruning_info* function.
-
-<!-- Pruning variants requires a MAC file from the simulated data, the expected number of variants within each MAC bin (product of the *Expected_variants* function),  and the name and location of the gzipped haplotype file. Additionally, here it is specified that the computer running the pruning algorithm is a mac. -->
-
-<!-- When running the pruning function, the haplotypes files are rewritten. Thus, if the original files are needed, a copy needs to be made prior  to  pruning.  -->
-
-<!-- ```{r } -->
-<!-- # Pruning_function(hap_file_name = '/Users/megansorenson/Documents/RAREsim/Example/Block37_rep1.controls.haps.gz', MAC = MAC_afr, expected = bin_estimates, computer_type = 'mac') -->
-<!-- ``` -->
-
-<!-- The output within R states the number of variants that were pruned. The haplotype files have been pruned and now have the expected number of variants per MAC bin. -->
-
-<!-- Once the pruning process is complete, RAREsim has produced a haplotype file with simulated data that on average matches what is expected based on the *Expected_variants*  input. The haplotypes emulate real data with respect to the total number of variants, AFS, and haplotype structure. Variant annotation of any type can be easily added to the simulated data. -->
-
-
+Pruning requires the haplotype and legend files that are being pruned and the output from the *Pruning_info* function.
