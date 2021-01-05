@@ -13,7 +13,7 @@ Line k of the MAC file needs to correspond with the variant on line k in the hap
 \item{expected}{dataframe of expected number of variants per bin - as well as bin boundaries}
 }
 \value{
-ToPrune -  a  data frame with 3 columns: line number, current MAC, new MAC
+A list with two data frames: ToRemove (variants that will have all alternate alleles pruned) and ToChange (variants that will have a subset of alternate alleles removed), Both have 3 columns: line number, current MAC, new MAC
 }
 \description{
 This function theoretically prunes the variants to match what is expected

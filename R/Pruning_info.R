@@ -9,7 +9,7 @@
 #'
 #' @param expected dataframe of expected number of variants per bin - as well as bin boundaries
 #'
-#' @return ToPrune -  a  data frame with 3 columns: line number, current MAC, new MAC
+#' @return A list with two data frames: ToRemove (variants that will have all alternate alleles pruned) and ToChange (variants that will have a subset of alternate alleles removed), Both have 3 columns: line number, current MAC, new MAC
 #'
 #' @author Megan M Null, \email{megan.null@ucdenver.edu}
 #' 
@@ -129,8 +129,7 @@ Pruning_info <- function(MAC, expected){
   colnames(change_all) <- colnames(rem_all) # rename the columns to make rem_all
   }
   
-  ToPrune <- rbind(rem_all, change_all) # bind all the inforrmation together
-  return(ToPrune)
+  return(list(ToRemove = rem_all, ToChange = change_all))
 }
 
 
