@@ -1,16 +1,11 @@
-#' RAREsim
-#'
-#' Simulate rare variant genetic data
+#' Create file for effiecient pruning of variants
 #'
 #' @param variants_to_remove list of the line  number of variants to remove
 #' 
 #' @param name name of the file that will be written. Default to 'List2delete.sed'
 #'
 #' @return R output is text stating what has been accomlished. A file has been written.
-#'
-#' @author Megan M Null, \email{megan.null@ucdenver.edu}
 #' 
-#' @keywords RAREsim
 #'
 #' @export
 #' 

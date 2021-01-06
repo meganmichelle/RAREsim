@@ -1,18 +1,14 @@
-#' Fit_nvariant
+#' Given target data, fit the Number of Variants function
 #'
-#' This function takes Number of Variants target data and estimates parameters for the Number of Variants function
+#' This function takes Number of Variants target data and estimates parameters for the Number of Variants function.
 #' A dataframe specifying the number of variants per Kb at various sample sizes is required to fit the data
 #'
-#' @param Observed_variants_per_kb A data frame with the first column sample size and the second variants per Kb,  both numeric
+#' @param Observed_variants_per_kb A data frame with the first column sample size and the second variants per Kb, both numeric
 #'
 #' @return Vector of parameters - phi and omega
 #'
-#' @author Megan M Null, \email{megan.null@ucdenver.edu}
-#' 
-#' @keywords RAREsim
-#'
-#'
 #' @export
+#' 
 #' @importFrom nloptr slsqp
 #' 
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Pruning_info.R
 \name{Pruning_info}
 \alias{Pruning_info}
-\title{Pruning Info}
+\title{Theoretically prune the variants}
 \usage{
 Pruning_info(MAC, expected)
 }
@@ -20,7 +20,3 @@ This function theoretically prunes the variants to match what is expected
 The current allele counts from the haplotype file also needs to be provided
 The output will be used to prune the haplotype files, as seen in the example on github.
 }
-\author{
-Megan M Null, \email{megan.null@ucdenver.edu}
-}
-\keyword{RAREsim}

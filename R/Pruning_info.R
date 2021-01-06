@@ -1,4 +1,4 @@
-#' Pruning Info
+#' Theoretically prune the variants
 #'
 #' This function theoretically prunes the variants to match what is expected
 #' The current allele counts from the haplotype file also needs to be provided
@@ -11,9 +11,6 @@
 #'
 #' @return A list with two data frames: ToRemove (variants that will have all alternate alleles pruned) and ToChange (variants that will have a subset of alternate alleles removed), Both have 3 columns: line number, current MAC, new MAC
 #'
-#' @author Megan M Null, \email{megan.null@ucdenver.edu}
-#' 
-#' @keywords RAREsim
 #'
 #' @export
 #' 

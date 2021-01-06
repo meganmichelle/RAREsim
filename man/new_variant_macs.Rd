@@ -2,7 +2,7 @@
 % Please edit documentation in R/new_variant_macs.R
 \name{new_variant_macs}
 \alias{new_variant_macs}
-\title{RAREsim}
+\title{Edits the haplotype file for variants that require a subset of alternate alleles returned to reference}
 \usage{
 new_variant_macs(original_variants, new_MAC)
 }
@@ -16,9 +16,7 @@ New dataframe with the edited variants to insert into the complete haplotype fil
 }
 \description{
 The *new_variant_macs* function edits the variants that require a subset of alternate alleles returned to reference.
-The variants that will be edited should first extracted from the haplotype file, along with the new MAC for each variant.
+The variants that will be edited should first extracted from the haplotype file and the new MAC for each variant determined.
+See the example scripts for how to extract the variants, and the *pruning_info* function to determine which
+variants should have a subset of alternate alleles returned to reference.
 }
-\author{
-Megan M Null, \email{megan.null@ucdenver.edu}
-}
-\keyword{RAREsim}

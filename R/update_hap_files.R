@@ -1,10 +1,13 @@
-#' RAREsim
+#' Edit the (upzipped) haplotype files
+#' 
+#' After creating new pruned variants with the *create_new_mac* function,
+#' edit the unzipped haplotypes. A new haplotype file is created.
+#' This needs to be done before variants are removed to ensure the line numbers align correctly. 
 #'
-#' Simulate rare variant genetic data
 #'
-#' @param con1 original name of the file
+#' @param con1 name of the original unzipped haplotype file
 #'
-#' @param con2 output file
+#' @param con2 name of the new haplotype file, also unzipped
 #'
 #' @param repl_lines replacement lines - obtained from readLines of the file to replace
 #'
@@ -12,9 +15,6 @@
 #'
 #' @return R output is text stating what has been accomplished. The new files have been written.
 #'
-#' @author Megan M Null, \email{megan.null@ucdenver.edu}
-#' 
-#' @keywords RAREsim
 #'
 #' @export
 #' 

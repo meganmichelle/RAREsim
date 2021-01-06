@@ -3,20 +3,17 @@
 \docType{data}
 \name{afs_eas}
 \alias{afs_eas}
-\title{East Asian AFS target data from gnomAD (cite)}
+\title{East Asian AFS target data from gnomAD v2.1 (Karczewski, 2020)}
 \format{
-A data frame for the Non-Finnish European AFS target data
-}
-\source{
-RAREsim paper
+A data frame for the Non-Finnish European AFS target data. The first two columns define the MAC Bin boundaries. The third column is the proportion of variants in that bin.
 }
 \usage{
 data(afs_eas)
 }
 \description{
-East Asian AFS target data from gnomAD (cite)
+East Asian AFS target data from gnomAD v2.1 (Karczewski, 2020)
 }
-\references{
-Null, Megan M
+\details{
+Used to fit the afs function with *Fit_afs*
 }
 \keyword{datasets}

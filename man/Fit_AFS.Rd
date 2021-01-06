@@ -2,14 +2,14 @@
 % Please edit documentation in R/Fit_AFS.R
 \name{Fit_afs}
 \alias{Fit_afs}
-\title{Fit_afs}
+\title{Given target data, fit the AFS function}
 \usage{
 Fit_afs(Observed_bin_props, p_rv = NULL)
 }
 \arguments{
 \item{Observed_bin_props}{data frame with 3 columns, Lower, Upper (of MAC bins)  and proportion of variants in that MAC bin}
 
-\item{p_rv}{percent of rare variants - just the sum of the proportions}
+\item{p_rv}{proportion of rare variants - default is the sum of the rare MAC bin proportions}
 }
 \value{
 list of parameters - alpha, beta, and b as well as fitted proportions
@@ -19,7 +19,3 @@ This function takes AFS target data and estimates parameters for the AFS functio
 A dataframe specifying the rare MAC bins and the observed proportion of variants is used to fit the data
 The proportion of rare variants (p_rv) is by default the sum of the rare allele count bins. The proportion be manually specified if desired
 }
-\author{
-Megan M Null, \email{megan.null@ucdenver.edu}
-}
-\keyword{RAREsim}

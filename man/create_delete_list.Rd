@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_delete_list.R
 \name{create_delete_list}
 \alias{create_delete_list}
-\title{RAREsim}
+\title{Create file for effiecient pruning of variants}
 \usage{
 create_delete_list(variants_to_remove, name = NULL)
 }
@@ -15,9 +15,5 @@ create_delete_list(variants_to_remove, name = NULL)
 R output is text stating what has been accomlished. A file has been written.
 }
 \description{
-Simulate rare variant genetic data
+Create file for effiecient pruning of variants
 }
-\author{
-Megan M Null, \email{megan.null@ucdenver.edu}
-}
-\keyword{RAREsim}

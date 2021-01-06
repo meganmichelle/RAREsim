@@ -48,14 +48,14 @@ Here we will fit the example data for the African ancestry population. Example d
 
 ```{r }
 # load the target data
-data("var_per_kb_afr")
-print(var_per_kb_afr, row.names  =  FALSE)
+data("nvariant_afr")
+print(nvariant_afr, row.names  =  FALSE)
 ```
 
 The target data is used to estimate $\phi$ and $\omega$ within a least squares loss function, optimizing using sequential quadratic programming (SQP). This optimization is implemented via the *Fit_nvariant* function.
 
 ```{r }
-nvar <- Fit_nvariant(var_per_kb_afr)
+nvar <- Fit_nvariant(nvariant_afr)
 nvar
 ```
 

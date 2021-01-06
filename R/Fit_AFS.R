@@ -1,4 +1,4 @@
-#' Fit_afs
+#' Given target data, fit the AFS function
 #'
 #' This function takes AFS target data and estimates parameters for the AFS function
 #' A dataframe specifying the rare MAC bins and the observed proportion of variants is used to fit the data
@@ -6,16 +6,13 @@
 #' 
 #' @param  Observed_bin_props data frame with 3 columns, Lower, Upper (of MAC bins)  and proportion of variants in that MAC bin
 #'
-#' @param p_rv percent of rare variants - just the sum of the proportions
+#' @param p_rv proportion of rare variants - default is the sum of the rare MAC bin proportions
 #'
 #' @return list of parameters - alpha, beta, and b as well as fitted proportions
 #'
-#' @author Megan M Null, \email{megan.null@ucdenver.edu}
-#' 
-#' @keywords RAREsim
-#'
 #'
 #' @export
+#' 
 #' @importFrom nloptr slsqp
 #'
 

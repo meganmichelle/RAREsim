@@ -2,20 +2,20 @@
 % Please edit documentation in R/afs.R
 \name{afs}
 \alias{afs}
-\title{afs}
+\title{afs function - Calculates proportion of variants per rare MAC bins}
 \usage{
 afs(alpha = NULL, beta = NULL, b = NULL, mac_bins, pop = NULL)
 }
 \arguments{
-\item{alpha}{AFS function parameter alpha}
+\item{alpha}{AFS function parameter alpha, does not need to be specified if default parameters are used}
 
-\item{beta}{AFS function parameter beta}
+\item{beta}{AFS function parameter beta, does not need to be specified if default parameters are used}
 
-\item{b}{AFS function parameter b}
+\item{b}{AFS function parameter b, does not need to be specified if default parameters are used}
 
 \item{mac_bins}{The MAC bins to use, with lower and upper boundaries defined}
 
-\item{pop}{The population - specified when using default parameters}
+\item{pop}{The population: AFR, EAS, NFE or SAS - specified when using default parameters}
 }
 \value{
 data frame with the MAC bins provided and proportion of variants in each bin
@@ -31,7 +31,3 @@ The default parameters will be used if an ancestrial population is specified: (A
 Otherwise, the parameters alpha, beta, and b need to be provided.
 Alpha, Beta, and b can be estimated from target data using the *Fit_afs* function.
 }
-\author{
-Megan M Null, \email{megan.null@ucdenver.edu}
-}
-\keyword{RAREsim}

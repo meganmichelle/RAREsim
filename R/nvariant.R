@@ -1,4 +1,4 @@
-#' nvariant
+#' Number of Variants function
 #'
 #' The Number of Variants (nvariant) function calculates the number of variants per kilobase, as described in RAREsim.
 #' N is the number of individuals. The Number of Variants function changes with N.
@@ -16,10 +16,8 @@
 #'
 #' @return the number of variants per kb
 #'
-#' @author Megan M Null, \email{megan.null@ucdenver.edu}
 #' 
 #' @keywords RAREsim
-#'
 #'
 #' @export
 #'

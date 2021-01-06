@@ -2,14 +2,16 @@
 % Please edit documentation in R/Expected_variants.R
 \name{Expected_variants}
 \alias{Expected_variants}
-\title{Expected Variants}
+\title{Combines Number of Variants and AFS functions}
 \usage{
 Expected_variants(Total_num_var, mac_bin_prop)
 }
 \arguments{
-\item{Total_num_var}{estimated  number of variants  in the  region}
+\item{Total_num_var}{estimated total number of variants in the region of interest}
 
-\item{mac_bin_prop}{The MAC bins to use, with lower and upper boundaries defined. Only define for rare variants}
+\item{mac_bin_prop}{The MAC bins to use, with three columns: Lower, Upper, and Prop.
+Lower and Upper define the MAC bins boundaries and Prop is the proportion of variants in each respective bin.
+ Only define for rare variants}
 }
 \value{
 data frame with the MAC bins and expected variants
@@ -18,7 +20,3 @@ data frame with the MAC bins and expected variants
 This function combines the Number of Variants and AFS functions to produces the expected number of variants per Kb in each MAC bin
 The output from the afs and nvariants functions can be used here
 }
-\author{
-Megan M Null, \email{megan.null@ucdenver.edu}
-}
-\keyword{RAREsim}

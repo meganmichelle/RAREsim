@@ -3,20 +3,14 @@
 \docType{data}
 \name{MAC_afr}
 \alias{MAC_afr}
-\title{African example MAC data, simulated from HAPGEN2 with all bp included}
+\title{Example MAC data for an African/African American population, simulated from HAPGEN2 with all bp included}
 \format{
-A data frame with one column of MAC's
-}
-\source{
-RAREsim paper
+A data frame with one column of MAC's - no column name
 }
 \usage{
 data(MAC_afr)
 }
 \description{
-African example MAC data, simulated from HAPGEN2 with all bp included
-}
-\references{
-Null, Megan M
+Example MAC data for an African/African American population, simulated from HAPGEN2 with all bp included
 }
 \keyword{datasets}

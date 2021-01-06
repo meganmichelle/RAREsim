@@ -2,21 +2,17 @@
 % Please edit documentation in R/Fit_nvariant.R
 \name{Fit_nvariant}
 \alias{Fit_nvariant}
-\title{Fit_nvariant}
+\title{Given target data, fit the Number of Variants function}
 \usage{
 Fit_nvariant(Observed_variants_per_kb)
 }
 \arguments{
-\item{Observed_variants_per_kb}{A data frame with the first column sample size and the second variants per Kb,  both numeric}
+\item{Observed_variants_per_kb}{A data frame with the first column sample size and the second variants per Kb, both numeric}
 }
 \value{
 Vector of parameters - phi and omega
 }
 \description{
-This function takes Number of Variants target data and estimates parameters for the Number of Variants function
+This function takes Number of Variants target data and estimates parameters for the Number of Variants function.
 A dataframe specifying the number of variants per Kb at various sample sizes is required to fit the data
 }
-\author{
-Megan M Null, \email{megan.null@ucdenver.edu}
-}
-\keyword{RAREsim}

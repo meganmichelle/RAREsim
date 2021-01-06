@@ -1,7 +1,9 @@
-#' RAREsim
+#' Edits the haplotype file for variants that require a subset of alternate alleles returned to reference
 #'
 #' The *new_variant_macs* function edits the variants that require a subset of alternate alleles returned to reference.
-#' The variants that will be edited should first extracted from the haplotype file, along with the new MAC for each variant.
+#' The variants that will be edited should first extracted from the haplotype file and the new MAC for each variant determined.
+#' See the example scripts for how to extract the variants, and the *pruning_info* function to determine which
+#' variants should have a subset of alternate alleles returned to reference.
 #'
 #' @param original_variants A data frame with the haplotypes of the variants the require a subset of the alternate alleles to be returned to reference
 #'
@@ -9,9 +11,6 @@
 #'
 #' @return New dataframe with the edited variants to insert into the complete haplotype files
 #'
-#' @author Megan M Null, \email{megan.null@ucdenver.edu}
-#' 
-#' @keywords RAREsim
 #'
 #' @export
 #' 

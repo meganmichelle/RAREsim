@@ -2,7 +2,7 @@
 % Please edit documentation in R/nvariant.R
 \name{nvariant}
 \alias{nvariant}
-\title{nvariant}
+\title{Number of Variants function}
 \usage{
 nvariant(phi = NULL, omega = NULL, N, pop = NULL)
 }
@@ -24,8 +24,5 @@ N is the number of individuals. The Number of Variants function changes with N.
 The default parameters will be used if an ancestrial population is specified: (AFR, EAS, NFE, or SAS) is specified.
 Otherwise, the parameters phi and omega need to be provided.
 Phi and omega can be estimated from target data using the Fit_nvariant function.
-}
-\author{
-Megan M Null, \email{megan.null@ucdenver.edu}
 }
 \keyword{RAREsim}
