@@ -16,7 +16,7 @@
 #' @export
 
 
-Expected_variants <- function(Total_num_var,mac_bin_prop){
+expected_variants <- function(Total_num_var,mac_bin_prop){
   
 
   if(is.numeric(Total_num_var) == FALSE){

@@ -12,7 +12,7 @@
 #' @importFrom nloptr slsqp
 #' 
 
-Fit_nvariant <- function(Observed_variants_per_kb){
+fit_nvariant <- function(Observed_variants_per_kb){
   
   # Check that each column is numeric
   if(is.numeric(Observed_variants_per_kb[,1]) == FALSE | is.numeric(Observed_variants_per_kb[,2]) == FALSE){

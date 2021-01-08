@@ -52,14 +52,14 @@ data("nvariant_afr")
 print(nvariant_afr, row.names  =  FALSE)
 ```
 
-The target data is used to estimate $\phi$ and $\omega$ within a least squares loss function, optimizing using sequential quadratic programming (SQP). This optimization is implemented via the *Fit_nvariant* function.
+The target data is used to estimate $\phi$ and $\omega$ within a least squares loss function, optimizing using sequential quadratic programming (SQP). This optimization is implemented via the *fit_nvariant* function.
 
 ```{r }
-nvar <- Fit_nvariant(nvariant_afr)
+nvar <- fit_nvariant(nvariant_afr)
 nvar
 ```
 
-The output of the *Fit_nvariant* function are the parameters phi ($\phi$) and omega ($\omega$), respectively. The estimated parameters can then be used to determine the expected number of variants per Kb within the region of interest, given the number of individuals to be simulated, $N_{sim}$.
+The output of the *fit_nvariant* function are the parameters phi ($\phi$) and omega ($\omega$), respectively. The estimated parameters can then be used to determine the expected number of variants per Kb within the region of interest, given the number of individuals to be simulated, $N_{sim}$.
 
 For example, to simulate the sample size observed in the target data, ($N_{sim}=8128$), we calculate $\hat{f_{Nvariant}}(N_{sim})=\hat{\phi} N_{sim}^\hat{\omega}$. This can be done with the *nvariant* function. 
 
@@ -121,11 +121,11 @@ print(afs_afr)
 ```
 
 
-To fit the *AFS* function (*Fit_afs*), RAREsim requires the data frame with MAC bins and proportion  of variants (shown above), the number of subjects  to  simulate $N$, and the total proportion of rare variants, $p_{rv}$. Here, we will simulate the sample size observed in gnomAD, $N = 8128$. The function estimates the parameters alpha ($\alpha$), beta ($\beta$), and $b$, and includes the estimated proportion of variants based on calculations from the fitted parameters, as shown below. 
+To fit the *AFS* function (*fit_afs*), RAREsim requires the data frame with MAC bins and proportion  of variants (shown above), the number of subjects  to  simulate $N$, and the total proportion of rare variants, $p_{rv}$. Here, we will simulate the sample size observed in gnomAD, $N = 8128$. The function estimates the parameters alpha ($\alpha$), beta ($\beta$), and $b$, and includes the estimated proportion of variants based on calculations from the fitted parameters, as shown below. 
 
 
 ```{r }
-af <- Fit_afs(Observed_bin_props = afs_afr)
+af <- fit_afs(Observed_bin_props = afs_afr)
 print(af)
 ```
 
@@ -160,16 +160,16 @@ afs(alpha = 1.594622, beta =  -0.2846474, b  = 0.297495, mac_bins = mac)
 Using the parameter estimates from the *Number of Variants* and *AFS* functions, the expected number of variants in each MAC bin can be estimated. An example using the total number of varants and estimated proportion of variants per MAC bin is shown below.
 
 ```{r }
-bin_estimates <- Expected_variants(Total_num_var = 865.0633, mac_bin_prop = af$Fitted_results)
+bin_estimates <- expected_variants(Total_num_var = 865.0633, mac_bin_prop = af$Fitted_results)
 print(bin_estimates)
 ```
 
-The output of the *Expected_variants* function is the exected number of variants in each MAC bin within the simulation region. This output (shown above) is input for the pruning function.
+The output of the *expected_variants* function is the exected number of variants in each MAC bin within the simulation region. This output (shown above) is input for the pruning function.
 
-The *Number of Variants* and *AFS* function can also be calculated within the *Expected_variants* function.
+The *Number of Variants* and *AFS* function can also be calculated within the *expected_variants* function.
 
 ```{r }
-bin_estimates <- Expected_variants(Total_num_var = 19.029*nvariant(phi = 0.1638108, omega = 0.6248848, N = 8128), mac_bin_prop = afs(mac_bins = mac, pop = 'AFR'))
+bin_estimates <- expected_variants(Total_num_var = 19.029*nvariant(phi = 0.1638108, omega = 0.6248848, N = 8128), mac_bin_prop = afs(mac_bins = mac, pop = 'AFR'))
 print(bin_estimates)
 ```
 
@@ -190,17 +190,17 @@ Pruning happens in two stages: 1) RAREsim theoretically decides which variants s
 
 #### 1) Theoretically Prune
 
-Pruning variants requires a MAC file from the simulated data and the expected number of variants within each MAC bin (product of the *Expected_variants* function).
+Pruning variants requires a MAC file from the simulated data and the expected number of variants within each MAC bin (product of the *expected_variants* function).
 
 ```{r}
-ToPrune <- Pruning_info(MAC = MAC_afr, expected = bin_estimates)
+ToPrune <- prune_variants(MAC = MAC_afr, expected = bin_estimates)
 head(ToPrune, row.names = FALSE)
 ```
 
-The output from *Pruning_info* includes the variants to prune, notated by what line they are in the haplotype file, the current allele count, and the new minor allele count. Variants that will either have all or a subset of minor alleles removed. 
+The output from *prune_variants* includes the variants to prune, notated by what line they are in the haplotype file, the current allele count, and the new minor allele count. Variants that will either have all or a subset of minor alleles removed. 
 
 #### 2) Pruning Implementation
 
 There is (or soon will be) an example on the [RAREsim github page](https://github.com/meganmichelle/RAREsim/blob/master/HAPGEN2_simulation_example) that shows how to implement the pruning.
 
-Pruning requires the haplotype and legend files that are being pruned and the output from the *Pruning_info* function.
+Pruning requires the haplotype and legend files that are being pruned and the output from the *prune_variants* function.

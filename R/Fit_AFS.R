@@ -16,7 +16,7 @@
 #' @importFrom nloptr slsqp
 #'
 
-Fit_afs <- function(Observed_bin_props, p_rv = NULL){
+fit_afs <- function(Observed_bin_props, p_rv = NULL){
   
   # Check the column names of Observed_bin_props
   if((colnames(Observed_bin_props)[1] == 'Lower') == FALSE | (colnames(Observed_bin_props)[2]  == 'Upper') == FALSE |

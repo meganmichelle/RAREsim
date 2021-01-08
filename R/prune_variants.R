@@ -17,7 +17,7 @@
 #' @importFrom stats runif
 
 
-Pruning_info <- function(MAC, expected){
+prune_variants <- function(MAC, expected){
   
   # check for correct column names
   if( ((colnames(expected)[1] == 'Lower') & (colnames(expected)[2] == 'Upper') 
