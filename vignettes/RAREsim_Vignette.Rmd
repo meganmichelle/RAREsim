@@ -2,7 +2,7 @@
 title: "RAREsim Vignette"
 author: "Megan Null"
 output:
-  rmarkdown::word_document
+  rmarkdown::pdf_document
 vignette: >
   %\VignetteEngine{knitr::knitr}
   %\VignetteIndexEntry{RAREsim Vignette}
@@ -35,14 +35,14 @@ In order to emulate real sequencing data, RAREsim prunes the simulated variants 
 
 ## The Number of Variants function
 
-For a given region, the *Number of Variants* function estimates the number of variants per Kb, $f_{Nvariant}(n)$, for a sample size $n$. Estimating the number of variants can be achieved by 1) Fitting target data to estimate parameters, 2) Using default parameters,  or 3) directly inputting parameters to the function. Additionally, a user may directly input the number of variants expected in the region (e.g. 1000 variants).
+For a given region, the *Number of Variants* function estimates the number of variants per Kb, $f_{nvariant}(n)$, for a sample size $n$. Estimating the number of variants can be achieved by 1) Fitting target data to estimate parameters, 2) Using default parameters,  or 3) directly inputting parameters to the function. Additionally, a user may directly input the number of variants expected in the region (e.g. 1000 variants).
 
 #### 1) Fitting Target Data
 
-Target data is used to estimate $\phi$ and $\omega$ to optimize the function $f_{Nvariant}(n)=\phi n^\omega$ to fit the target data.
+Target data is used to estimate $\phi$ and $\omega$ to optimize the function $f_{nvariant}(n)=\phi n^\omega$ to fit the target data.
 
 The Number of Variants target data consists of various sample sizes ($n$) and the observed number of variants per Kb in the region of interest. Ancestry specific data is advised. 
-Data should be formatted with the first column as the number of individuals ($n$) and the second column as the observed number of variants per Kb in the region of interest ($per_kb$). 
+Data should be formatted with the first column as the number of individuals ($n$) and the second column as the observed number of variants per Kb in the region of interest ($per_{kb}$). 
 
 Here we will fit the example data for the African ancestry population. Example data is available in the R package for each of the four ancestries: African (AFR), East Asian (EAS), Non-Finnish European (NFE), and South Asian (SAS).
 
@@ -61,7 +61,7 @@ nvar
 
 The output of the *fit_nvariant* function are the parameters phi ($\phi$) and omega ($\omega$), respectively. The estimated parameters can then be used to determine the expected number of variants per Kb within the region of interest, given the number of individuals to be simulated, $N_{sim}$.
 
-For example, to simulate the sample size observed in the target data, ($N_{sim}=8128$), we calculate $\hat{f_{Nvariant}}(N_{sim})=\hat{\phi} N_{sim}^\hat{\omega}$. This can be done with the *nvariant* function. 
+For example, to simulate the sample size observed in the target data, ($N_{sim}=8128$), we calculate $\hat{f_{nvariant}} (N_{sim}) = \hat{\phi} N_{sim}^{\hat{\omega}}$. This can be done with the *nvariant* function. 
 
 Parameter values for phi ($\phi$), omega ($\omega$), and the sample size (n) found previously are used here.
 
@@ -87,7 +87,7 @@ nvariant(phi = 0.1638108, omega = 0.6248848, N = 8128)
 
 ### Total Number of Variants in the Region
 
-The example data here is  a cM block with 19,029 bp. Thus, to calculate the total expected number of variants in the region, we multiple the expected number of variants per Kb (*Nvariant*) by 19.029.
+The example data here is  a cM block with 19,029 bp. Thus, to calculate the total expected number of variants in the region, we multiple the expected number of variants per Kb (*nvariant*) by 19.029.
 
 ```{r }
 19.029*nvariant(phi = 0.1638108, omega = 0.6248848, N = 8128)
@@ -131,7 +131,7 @@ print(af)
 
 #### 2) Using Default Parameters
 
-As with the *Variants per Kb* function, default parameters can be used to estimate the parameters for the *AFS* function  with the  *AFS_calc* function. As the default parameters are ancestry specific, the ancestry needs to be specified as pop = AFR, EAS, NFE, or SAS  when default parameters are used. The parameters alpha ($\alpha$), beta ($\beta$), and b can  be specified, or default parameters  can be used. Both implementations of the function require a MAC bin dataframe,  with the  bins specified.
+As with the *Variants per Kb* function, default parameters can be used to estimate the parameters for the *AFS* function  with the  *afs* function. As the default parameters are ancestry specific, the ancestry needs to be specified as pop = AFR, EAS, NFE, or SAS  when default parameters are used. The parameters alpha ($\alpha$), beta ($\beta$), and b can  be specified, or default parameters  can be used. Both implementations of the function require a MAC bin dataframe,  with the  bins specified.
 
 This is the first two columns of the AFS target data.
 ```{r }
@@ -194,7 +194,8 @@ Pruning variants requires a MAC file from the simulated data and the expected nu
 
 ```{r}
 ToPrune <- prune_variants(MAC = MAC_afr, expected = bin_estimates)
-head(ToPrune, row.names = FALSE)
+head(ToPrune$ToRemove, row.names = FALSE)
+head(ToPrune$ToChange)
 ```
 
 The output from *prune_variants* includes the variants to prune, notated by what line they are in the haplotype file, the current allele count, and the new minor allele count. Variants that will either have all or a subset of minor alleles removed. 
