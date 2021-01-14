@@ -107,6 +107,19 @@ MAC = 11 - 20
 MAC = 21 - MAF = 0.5%  
 MAC = 0.5% - MAF = 1%  
 
+These are the recommended bins when simulated sample sizes above 3,500.
+
+When simulating sample sizes between 2000 and 3500, the recommended MAC bins are:
+
+MAC = 1  
+MAC = 2  
+MAC = 3 - 5  
+MAC = 6 - MAF = 0.25%  
+MAF = 0.25% - MAF = 0.5%  
+MAF = 0.5% - MAF = 1%  
+
+It is currently not recommended to simulate below 2000 individuals. If a smaller sample size is simulated, we recommend simulating 2000 individuals and randomly downsampling to the desired sample size.
+
 Estimating the AFS can be achieved by 1) Fitting target data to estimate parameters, 2) Using default parameters, or 3) directly inputting parameters to the function. Additionally, a user may directly input the proportion of variants in each MAC bin.
 
 #### 1) Fitting Target Data
@@ -121,7 +134,7 @@ print(afs_afr)
 ```
 
 
-To fit the *AFS* function (*fit_afs*), RAREsim requires the data frame with MAC bins and proportion  of variants (shown above), the number of subjects  to  simulate $N$, and the total proportion of rare variants, $p_{rv}$. Here, we will simulate the sample size observed in gnomAD, $N = 8128$. The function estimates the parameters alpha ($\alpha$), beta ($\beta$), and $b$, and includes the estimated proportion of variants based on calculations from the fitted parameters, as shown below. 
+To fit the *AFS* function (*fit_afs*), RAREsim requires the data frame with MAC bins and proportion  of variants (shown above), the number of subjects  to  simulate $N$, and the total proportion of rare variants, $p_{rv}$. Here, we will simulate the sample size observed in gnomAD, $N = 8128$. The function estimates the parameters alpha ($\alpha$), beta ($\beta$), and $b$, and includes the estimated proportion of variants based on calculations from the fitted parameters, as shown below. Ensure that the MAC bins are defined based on the sample size of the target data. 
 
 
 ```{r }
@@ -157,7 +170,10 @@ afs(alpha = 1.594622, beta =  -0.2846474, b  = 0.297495, mac_bins = mac)
 
 ## Expected Number of Variants per MAC bin
 
-Using the parameter estimates from the *Number of Variants* and *AFS* functions, the expected number of variants in each MAC bin can be estimated. An example using the total number of varants and estimated proportion of variants per MAC bin is shown below.
+Using the parameter estimates from the *Number of Variants* and *AFS* functions, the expected number of variants in each MAC bin can be estimated. An example using the total number of varants and estimated proportion of variants per MAC bin is shown below. 
+
+Ensure the the MAC bin boundaries are defined based on the sample size that will be simulated. See The Allele Frequency Spectrum Function section for recommended MAC bins.
+
 
 ```{r }
 bin_estimates <- expected_variants(Total_num_var = 865.0633, mac_bin_prop = af$Fitted_results)
@@ -175,7 +191,6 @@ print(bin_estimates)
 
 
 ## Pruning Variants
-
 
 
 In order to use RAREsim to prune simulated data, genetic data must be simulated with HAPGEN2 with all sequencing bases, including monomorphic variants, added to the input haplotypes. HAPGEN2 will simulate an abudance of rare variants to allow for variant pruning. Additionally, a MAC file (count of the number of alternate alleles at each bp) enables an efficient and fast pruning process. It is recommended to create the MAC file within the process of simulating data with HAPGEN2, as shown in the example code that is available on the [RAREsim Example code github page](https://github.com/meganmichelle/RAREsim_Example). 
