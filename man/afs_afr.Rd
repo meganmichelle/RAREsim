@@ -14,6 +14,6 @@ data(afs_afr)
 African/African American target data from gnomAD v2.1 (Karczewski, 2020)
 }
 \details{
-Used to fit the afs function with *Fit_afs*
+Used to fit the afs function with *fit_afs*
 }
 \keyword{datasets}
