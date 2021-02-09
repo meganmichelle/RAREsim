@@ -118,7 +118,8 @@ MAC = 6 - MAF = 0.25%
 MAF = 0.25% - MAF = 0.5%  
 MAF = 0.5% - MAF = 1%  
 
-It is currently not recommended to simulate below 2000 individuals. If a smaller sample size is simulated, we recommend simulating 2000 individuals and randomly downsampling to the desired sample size.
+
+If a sample size below 2000 is desired, we recommend simulating 2000 individuals and taking a random sample to reach the desired sample size.
 
 Estimating the AFS can be achieved by 1) Fitting target data to estimate parameters, 2) Using default parameters, or 3) directly inputting parameters to the function. Additionally, a user may directly input the proportion of variants in each MAC bin.
 

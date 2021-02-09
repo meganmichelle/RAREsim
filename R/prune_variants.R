@@ -54,6 +54,7 @@ prune_variants <- function(MAC, expected){
   # check that there are more simulated rare alleles than expected
   if(length(which(MAC$V1>0))<sum(expected$Expected_var)){
     print('Error, not enough rare alleles')
+    print('Check that >2000 individuals are being simulated and the size of the region is correct')
   }
   
   MAC$num <-  1:nrow(MAC) # Identify the line each variant is on

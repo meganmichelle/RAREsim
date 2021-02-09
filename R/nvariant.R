@@ -29,6 +29,11 @@ nvariant<-function(phi=NULL, omega=NULL, N,  pop=NULL){
     warning('We currently do not recommend simulating sample sizes over 125,000')
   }
   
+  if(N<2000){
+    warning('To simulate <2000 individuals, use RAREsim to simulate 2000 individuals
+            and randomly downsample to the desired size')
+  }
+  
   # If either both parameters should be specified or the ancestry for default parameters 
   if((is.null(phi) | is.null(omega)) & is.null(pop)){
     stop('A population must be specified when using default parameters.')
