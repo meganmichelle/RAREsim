@@ -31,3 +31,10 @@ The default parameters will be used if an ancestrial population is specified: (A
 Otherwise, the parameters alpha, beta, and b need to be provided.
 Alpha, Beta, and b can be estimated from target data using the *Fit_afs* function.
 }
+\examples{
+ data('afs_afr')
+ mac <- afs_afr[,c(1:2)]
+ afs(mac_bins = mac, pop = 'AFR')
+ afs(alpha = 1.594622, beta =  -0.2846474, b  = 0.297495, mac_bins = mac)
+
+}

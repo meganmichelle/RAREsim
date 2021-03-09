@@ -6,6 +6,8 @@
 #'
 #' @return R output is text stating what has been accomlished. A file has been written.
 #' 
+#' @examples 
+#' create_delete_list(1:10)
 #'
 #' @export
 #' 

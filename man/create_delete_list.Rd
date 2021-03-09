@@ -17,3 +17,7 @@ R output is text stating what has been accomlished. A file has been written.
 \description{
 Create file for effiecient pruning of variants
 }
+\examples{
+create_delete_list(1:10)
+
+}

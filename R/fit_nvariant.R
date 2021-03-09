@@ -9,6 +9,11 @@
 #'
 #' @export
 #' 
+#' @examples 
+#' data("nvariant_afr")
+#' fit_nvariant(nvariant_afr)
+#' 
+#' 
 #' @importFrom nloptr slsqp
 #' 
 

@@ -12,6 +12,11 @@
 #'
 #' @return data frame with the MAC bins and expected variants
 #'
+#' @examples 
+#'  data('afs_afr')
+#'  mac <- afs_afr[,c(1:2)]
+#'  expected_variants(Total_num_var = 19.029*nvariant(pop='AFR', N = 8128),
+#'   mac_bin_prop = afs(mac_bins = mac, pop = 'AFR'))
 #'
 #' @export
 

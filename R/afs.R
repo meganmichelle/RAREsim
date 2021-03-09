@@ -22,6 +22,12 @@
 #' @return data frame with the MAC bins provided and proportion of variants in each bin
 #'
 #'
+#' @examples
+#'  data('afs_afr')
+#'  mac <- afs_afr[,c(1:2)]
+#'  afs(mac_bins = mac, pop = 'AFR')
+#'  afs(alpha = 1.594622, beta =  -0.2846474, b  = 0.297495, mac_bins = mac)
+#'
 #' @export
 #' 
 
@@ -63,7 +69,7 @@ afs <- function(alpha=NULL, beta=NULL, b=NULL, mac_bins, pop=NULL){
   # specify the default parameters
   if(is.null(alpha)){
     if(pop == 'AFR'){
-      alpha = 1.5882
+      alpha = 1.5883
       beta = -0.3083
       b = 0.2872
     }

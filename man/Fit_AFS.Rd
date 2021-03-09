@@ -19,3 +19,9 @@ This function takes AFS target data and estimates parameters for the AFS functio
 A dataframe specifying the rare MAC bins and the observed proportion of variants is used to fit the data
 The proportion of rare variants (p_rv) is by default the sum of the rare allele count bins. The proportion be manually specified if desired
 }
+\examples{
+data("afs_afr")
+colnames(afs_afr)[3] <- 'Prop'
+fit_afs(Observed_bin_props = afs_afr)
+
+}

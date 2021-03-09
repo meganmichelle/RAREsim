@@ -16,6 +16,10 @@
 #'
 #' @return the number of variants per kb
 #'
+#' @examples 
+#' nvariant(N=8128, pop = 'AFR') 
+#' nvariant(phi = 0.1638108, omega = 0.6248848, N = 8128)
+#' 
 #' 
 #' @keywords RAREsim
 #'

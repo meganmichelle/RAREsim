@@ -10,6 +10,10 @@
 #'
 #' @return list of parameters - alpha, beta, and b as well as fitted proportions
 #'
+#' @examples 
+#' data("afs_afr")
+#' colnames(afs_afr)[3] <- 'Prop'
+#' fit_afs(Observed_bin_props = afs_afr)
 #'
 #' @export
 #' 

@@ -16,3 +16,9 @@ Vector of parameters - phi and omega
 This function takes Number of Variants target data and estimates parameters for the Number of Variants function.
 A dataframe specifying the number of variants per Kb at various sample sizes is required to fit the data
 }
+\examples{
+data("nvariant_afr")
+fit_nvariant(nvariant_afr)
+
+
+}
