@@ -145,7 +145,6 @@ The first two columns in the target data identify the lower and upper boundaries
 ```{r }
 # load the data
 data("afs_afr")
-colnames(afs_afr)[3] <- 'Prop'
 print(afs_afr)
 ```
 
