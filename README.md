@@ -13,7 +13,7 @@ library(devtools)
 install_github('meganmichelle/RAREsim')
 ```
 
-RAREsim also requires HAPGEN2[https://mathgen.stats.ox.ac.uk/genetics_software/hapgen/hapgen2.html] and sed/gsed.
+RAREsim also requires [HAPGEN2](https://mathgen.stats.ox.ac.uk/genetics_software/hapgen/hapgen2.html) and sed/gsed.
 
 # Beta
 
