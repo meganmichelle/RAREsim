@@ -1,6 +1,6 @@
 # RAREsim
 
-RAREsim is a flexible and accurate rare variant simulation algorithm. Using parameters and haplotypes derived from real sequencing data, RAREsim efficiently simulates the expected variant distribution and enables real variant annotations.
+RAREsim is a flexible and accurate rare variant simulation algorithm that emulates real data. Using parameters and haplotypes derived from real sequencing data, RAREsim efficiently simulates the expected variant distribution and enables real variant annotations.
 
 Here, we have the RAREsim R package. RAREsim is implemented using the R functions along with HAPGEN2 and a Bash script. For a complete implementation of RAREsim, including  generalizable example code, see https://github.com/meganmichelle/RAREsim_Example.
 
