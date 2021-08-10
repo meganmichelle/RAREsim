@@ -13,7 +13,7 @@ afs(alpha = NULL, beta = NULL, b = NULL, mac_bins, pop = NULL)
 
 \item{b}{AFS function parameter b, does not need to be specified if default parameters are used}
 
-\item{mac_bins}{The MAC bins to use, with lower and upper boundaries defined}
+\item{mac_bins}{The rare MAC bins to use, with Lower and Upper boundaries defined}
 
 \item{pop}{The population: AFR, EAS, NFE or SAS - specified when using default parameters}
 }
@@ -22,14 +22,12 @@ data frame with the MAC bins provided and proportion of variants in each bin
 }
 \description{
 The afs function calculates the proportion of variants in minor allele count (MAC) bins given parameters, as described in RAREsim.
-The default parameters will be used if an ancestrial population is specified: (AFR, EAS, NFE, or SAS) is specified.
-Otherwise, the parameters alpha, beta, and b need to be provided.
-Alpha, Beta, and b can be estimated from target data using the *Fit_afs* function.
 }
 \details{
-The default parameters will be used if an ancestrial population is specified: (AFR, EAS, NFE, or SAS) is specified.
+The default parameters will be used if an ancestrial population is specified: pop = 'AFR', 'EAS', 'NFE', or 'SAS'.
 Otherwise, the parameters alpha, beta, and b need to be provided.
-Alpha, Beta, and b can be estimated from target data using the *Fit_afs* function.
+Alpha, beta, and b can be estimated from target data using the *Fit_afs* function.
+The MAC bins should be exhaustive, non-overlapping bins of rare allele counts with column names Lower and Upper.
 }
 \examples{
  data('afs_afr')

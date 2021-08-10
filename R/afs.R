@@ -1,13 +1,11 @@
 #' afs function - Calculates proportion of variants per rare MAC bins
 #'
 #' The afs function calculates the proportion of variants in minor allele count (MAC) bins given parameters, as described in RAREsim.
-#' The default parameters will be used if an ancestrial population is specified: (AFR, EAS, NFE, or SAS) is specified.
-#' Otherwise, the parameters alpha, beta, and b need to be provided.
-#' Alpha, Beta, and b can be estimated from target data using the *Fit_afs* function.
 #' 
-#' @details The default parameters will be used if an ancestrial population is specified: (AFR, EAS, NFE, or SAS) is specified.
+#' @details The default parameters will be used if an ancestrial population is specified: pop = 'AFR', 'EAS', 'NFE', or 'SAS'.
 #' Otherwise, the parameters alpha, beta, and b need to be provided.
-#' Alpha, Beta, and b can be estimated from target data using the *Fit_afs* function.
+#' Alpha, beta, and b can be estimated from target data using the *Fit_afs* function.
+#' The MAC bins should be exhaustive, non-overlapping bins of rare allele counts with column names Lower and Upper.
 #'
 #' @param alpha AFS function parameter alpha, does not need to be specified if default parameters are used
 #'
@@ -15,7 +13,7 @@
 #'
 #' @param b AFS function parameter b, does not need to be specified if default parameters are used
 #' 
-#' @param mac_bins The MAC bins to use, with lower and upper boundaries defined
+#' @param mac_bins The rare MAC bins to use, with Lower and Upper boundaries defined
 #' 
 #' @param pop The population: AFR, EAS, NFE or SAS - specified when using default parameters
 #'

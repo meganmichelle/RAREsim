@@ -1,4 +1,8 @@
 #' Create file for effiecient pruning of variants
+#' 
+#' @details 
+#' Given a list of variants, create_delete_list will write a file that specified which row/variants to delete from the haplotype and legend files.
+#' The written file will be executed with a sed or gsed command in bash.
 #'
 #' @param variants_to_remove list of the line  number of variants to remove
 #' 
@@ -8,6 +12,7 @@
 #' 
 #' @examples 
 #' create_delete_list(1:10)
+#' #In bash: sed -i -f List2delete.sed [file to delete]
 #'
 #' @export
 #' 
@@ -32,7 +37,7 @@ create_delete_list<-function(variants_to_remove, name=NULL){
               col.names = FALSE, quote = FALSE)
   close(output.file)
   
-  print(paste('File written called', name))
+  print(paste0('File written called ', name, '.sed'))
   print(paste0('To implement, run: sed -i -f ',
                name, '.sed [file to delete]'))
   

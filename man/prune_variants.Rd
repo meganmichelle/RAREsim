@@ -16,7 +16,17 @@ Line k of the MAC file needs to correspond with the variant on line k in the hap
 A list with two data frames: ToRemove (variants that will have all alternate alleles pruned) and ToChange (variants that will have a subset of alternate alleles removed), Both have 3 columns: line number, current MAC, new MAC
 }
 \description{
-This function theoretically prunes the variants to match what is expected
-The current allele counts from the haplotype file also needs to be provided
+This function theoretically prunes the variants to match what is expected.
+The current allele counts from the haplotype also needs to be provided in the MAC variable,
+along with the expected number of variants in each MAC bin.
 The output will be used to prune the haplotype files, as seen in the example on github.
+}
+\examples{
+ data('afs_afr')
+ mac <- afs_afr[,c(1:2)]
+ bin_estimates<-expected_variants(Total_num_var = 19.029*nvariant(pop='AFR', N = 8128),
+  mac_bin_prop = afs(mac_bins = mac, pop = 'AFR'))
+ data("MAC_afr")
+ prune_variants(MAC = MAC_afr, expected = bin_estimates) 
+
 }

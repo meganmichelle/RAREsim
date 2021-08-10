@@ -18,7 +18,6 @@ data frame with the MAC bins and expected variants
 }
 \description{
 This function combines the Number of Variants and AFS functions to produces the expected number of variants per Kb in each MAC bin
-The output from the afs and nvariants functions can be used here
 }
 \examples{
  data('afs_afr')

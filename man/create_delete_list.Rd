@@ -17,7 +17,12 @@ R output is text stating what has been accomlished. A file has been written.
 \description{
 Create file for effiecient pruning of variants
 }
+\details{
+Given a list of variants, create_delete_list will write a file that specified which row/variants to delete from the haplotype and legend files.
+The written file will be executed with a sed or gsed command in bash.
+}
 \examples{
 create_delete_list(1:10)
+#In bash: sed -i -f List2delete.sed [file to delete]
 
 }

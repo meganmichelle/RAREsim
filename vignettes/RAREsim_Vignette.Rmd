@@ -1,6 +1,5 @@
 ---
 title: "RAREsim Vignette"
-author: "Megan Null"
 output:
   rmarkdown::pdf_document
 vignette: >
@@ -8,7 +7,7 @@ vignette: >
   %\VignetteIndexEntry{RAREsim Vignette}
   \usepackage[UTF-8]{inputenc}  
 ---
-This vigette describes how to use the RAREsim R package to simulate rare variant genetic data. A start to finish simulation with RAREsim can be found online at the [RAREsim Example Code github page](https://github.com/meganmichelle/RAREsim_Example). Here, R functions within the package are described in more detail.
+This vigette describes how to use the RAREsim R package to simulate rare variant genetic data. Here, R functions within the package are described in more detail. A start to finish simulation with RAREsim can be found online at the [RAREsim Example Code GitHub page](https://github.com/meganmichelle/RAREsim_Example). 
 
 The example below simulates a one cM block on chromosome 19. Here, RAREsim simulates haplotypes to match target data from the African ancestry group from gnomAD v2.1 (Karczewski, et al., 2020).
 
@@ -27,15 +26,15 @@ The source code for all functions within the RAREsim package can be found at <ht
 
 RAREsim has three main steps:
 
-(1) Simulate genetic data with an abundance of rare variants using [HAPGEN2](https://mathgen.stats.ox.ac.uk/genetics_software/hapgen/hapgen2.html) (Su, 2011). By simulating with default parameters and input haplotypes with information at all sequencing bases, including monomorphic sites, HAPGEN2 simulates an abundance of rare variants.
+(1) Simulate genetic data with an abundance of rare variants using [HAPGEN2](https://mathgen.stats.ox.ac.uk/genetics_software/hapgen/hapgen2.html) (Su, 2011). By simulating with HAPGEN2 default parameters and input haplotypes with information at all sequencing bases, including monomorphic sites, HAPGEN2 simulates an abundance of rare variants.
 
-(2) Estimate the expected number of variants in minor allele count (MAC) bins. Users may fit target data, manually enter parameters, or use default parameters to estimate the number of variants per MAC bin; all are described in detail below.
+(2) Estimate the expected number of variants in minor allele count (MAC) bins. Users may fit target data, manually enter parameters, or use default parameters to estimate the number of variants per MAC bin
 
 (3) Probabilistically prune the rare variants to match the estimated number of variants in each MAC bin. RAREsim prunes the simulated variants by returning all or a subset of alternate alleles back to reference.
 
 ## Simulate genetic data with an abundance of rare variants
 
-An example simulation with HAPGEN2 can be found on the [RAREsim Example Code github page](https://github.com/meganmichelle/RAREsim_Example). The simulation is done using HAPGEN2 default parameters and haplotype files with information at every sequencing base within the region of interest.
+An example simulation with HAPGEN2 can be found on the [RAREsim Example Code GitHub page](https://github.com/meganmichelle/RAREsim_Example). The simulation is done using HAPGEN2 default parameters and haplotype files with information at every sequencing base within the region of interest.
 
 After haplotypes are simulated with HAPGEN2, all the bases that are monomorphic in the simulated data will be removed in the haplotype and legend files (see the example code).
 
@@ -47,7 +46,7 @@ The number of variants is estimated by combining the *Number of Variants* functi
 
 ### The *Number of Variants* function
 
-For a given region, the *Number of Variants* function estimates the number of variants per Kb, $f_{nvariant}(n)$, for a sample size $n$. Estimating the number of variants can be achieved by 1) fitting target data to estimate parameters, 2) using default parameters,  or 3) directly inputting parameters to the function. Additionally, a user may directly input the number of variants expected in the region (e.g. 1000 variants).
+For a given region, the *Number of Variants* function estimates the number of variants per Kb, $f_{nvariant}(n)$, for a sample size $n$. Estimating the number of variants can be achieved by 1) fitting target data to estimate parameters, 2) using default parameters,  or 3) directly inputting parameters to the function. Additionally, a user may skip this function if they already have an estimate for the total number of variants expected in the region (e.g. 1000 variants).
 
 #### 1) Fitting Target Data
 
@@ -84,7 +83,7 @@ nvariant(phi = nvar$phi, omega = nvar$omega, N = 8128)
 
 #### 2) Using Default Parameters
 
-RAREsim also provides ancestry specific default parameters for phi ($\phi$), omega ($\omega$). To use the default parameters, the  ancestry must be specified: African (AFR), East Asian (EAS), Non-Finnish European (NFE), or South Asian (SAS).
+RAREsim also provides ancestry specific default parameters for phi ($\phi$) and omega ($\omega$). To use the default parameters, the  ancestry must be specified: African (AFR), East Asian (EAS), Non-Finnish European (NFE), or South Asian (SAS).
 
 ```{r }
 nvariant(N=8128, pop = 'AFR') 
@@ -134,11 +133,11 @@ MAF = 0.5% - MAF = 1%
 
 If a sample size below 2000 is desired, we recommend simulating 2000 individuals and taking a random sample to reach the desired sample size.
 
-Estimating the AFS can be achieved by 1) fitting target data to estimate parameters, 2) using default parameters, or 3) directly inputting parameters to the function. Additionally, a user may directly input the proportion of variants in each MAC bin.
+Estimating the AFS can be achieved by 1) fitting target data to estimate parameters, 2) using default parameters, or 3) directly inputting parameters to the function. Additionally, a user may skip this function if they already have an estimate for the proportion of variants in each rare MAC bin.
 
 #### 1) Fitting Target Data
 
-Here we will fit the example target data for the African ancestry population. 
+Here we will fit the example target data for the African ancestry population. The target data was obtained from the gnomAD v2.1 vcf files. 
 
 The first two columns in the target data identify the lower and upper boundaries of each MAC bin. The third column specifies the observed proportion of variants within each MAC bin in the target data.
 
@@ -156,17 +155,19 @@ af <- fit_afs(Observed_bin_props = afs_afr)
 print(af)
 ```
 
+The output includes the estimated parameters alpha ($\alpha$), beta ($\beta$), and b, as well as the estimated proportion of variants in each MAC bin (Fitted_results).
+
 #### 2) Using Default Parameters
 
-As with the *Number of Variants* function, default parameters can be used to estimate the parameters for the *AFS* function  with the  *afs* function. As the default parameters are ancestry specific, the ancestry needs to be specified as pop = 'AFR', 'EAS', 'NFE', or 'SAS'. The function requires a MAC bin dataframe, with the bins specified.
+As with the *Number of Variants* function, default parameters can be used to estimate the parameters for the *AFS* function  with the  *afs* R function. As the default parameters are ancestry specific, the ancestry needs to be specified as pop = 'AFR', 'EAS', 'NFE', or 'SAS'. The function requires a MAC bin dataframe with the bins specified.
 
-This is the first two columns of the AFS target data.
+The MAC data frame is the first two columns of the AFS target data.
 ```{r }
 mac <- afs_afr[,c(1:2)]
 ```
 
 
-Using the MAC bins as input and specifying an African ancestry, the default parameters are used below to estimate the proportion of variants within each bin.
+Using the MAC bins as input and specifying an African ancestry, the default parameters are used to estimate the proportion of variants within each bin.
 
 
 ```{r }
@@ -188,7 +189,7 @@ Once the total number of variants (*nvariant*) and proportion of variants per bi
 
 The MAC bin boundaries should be defined based on the sample size that will be simulated.
 
-Continuing our example, we will imput the total number of variants we expect in the region (Total_num_var = 865.0634) and the estimated proportion of variants per MAC bin (af$Fitted_results).
+Continuing our example, we will input the total number of variants we expect in the region (Total_num_var = 865.0634) and the estimated proportion of variants per MAC bin (af$Fitted_results).
 
 
 ```{r }
@@ -196,12 +197,15 @@ bin_estimates <- expected_variants(Total_num_var = 865.0634, mac_bin_prop = af$F
 print(bin_estimates)
 ```
 
-The output of the *expected_variants* function is the exected number of variants in each MAC bin within the simulation region. This output (shown above) is input for the pruning function.
+The output of the *expected_variants* function is the exected number of variants in each MAC bin within the simulation region. This output is input for the pruning function.
 
 The *Number of Variants* and *AFS* function can also be calculated within the *expected_variants* function.
 
 ```{r }
-bin_estimates <- expected_variants(Total_num_var = 19.029*nvariant(phi = 0.1638108, omega = 0.6248848, N = 8128), mac_bin_prop = afs(mac_bins = mac, pop = 'AFR'))
+bin_estimates <- expected_variants(Total_num_var =
+                                     19.029*nvariant(phi = 0.1638108,
+                                                     omega = 0.6248848, N = 8128),
+                                   mac_bin_prop = afs(mac_bins = mac, pop = 'AFR'))
 print(bin_estimates)
 ```
 
@@ -214,7 +218,7 @@ To prune, the expected number of variants are compared to a MAC file. Below is a
 data("MAC_afr")
 ```
 
-Pruning happens in two stages: 1) RAREsim theoretically decides which variants should be pruned and 2) the haplotype and legend files are edited. The theoretical pruning takes place in R, within the RAREsim R package. The implementation of the pruning is done via a bash script - see the [RAREsim Example Code github page](https://github.com/meganmichelle/RAREsim_Example).
+Pruning happens in two stages: 1) RAREsim theoretically decides which variants should be pruned and 2) the haplotype and legend files are edited. The theoretical pruning takes place within the RAREsim R package. The implementation of the pruning is done via a bash script - see the [RAREsim Example Code GitHub page](https://github.com/meganmichelle/RAREsim_Example).
 
 #### 1) Theoretically Prune
 
@@ -226,11 +230,11 @@ head(ToPrune$ToRemove, row.names = FALSE)
 head(ToPrune$ToChange)
 ```
 
-The output from *prune_variants* includes the variants to prune, notated by what line they are in the haplotype file, the current allele count, and the new minor allele count. Variants that will either have all (ToRemove) or a subset of minor alleles (ToChange) removed. 
+The output from *prune_variants* includes the variants to prune - notated by line number in the haplotype file, the current allele count, and the new minor allele count. Variants that will either have all or a subset of minor alleles  removed. The variants with all alternate alleles removed is the ToRemove dataframe output, while the variants where a subset of alternate alleles are returned to reference is in the ToChange dataframe output.
 
 #### 2) Pruning Implementation
 
-See the [RAREsim Example Code github page](https://github.com/meganmichelle/RAREsim_Example) for a bash script to prune the variants, given the output from the *prune_variants* function.
+See the [RAREsim Example Code GitHub page](https://github.com/meganmichelle/RAREsim_Example) for a bash script to prune the variants, given the output from the *prune_variants* function.
 
 
 ### Simulated Genetic Data Complete!

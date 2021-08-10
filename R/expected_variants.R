@@ -1,7 +1,6 @@
 #' Combines Number of Variants and AFS functions
 #'
 #' This function combines the Number of Variants and AFS functions to produces the expected number of variants per Kb in each MAC bin
-#' The output from the afs and nvariants functions can be used here
 #' 
 #' 
 #' @param mac_bin_prop The MAC bins to use, with three columns: Lower, Upper, and Prop.
