@@ -24,7 +24,7 @@ library(RAREsim)
 
 The source code for all functions within the RAREsim package can be found at <https://github.com/meganmichelle/RAREsim>.
 
-RAREsim has three main steps:
+RAREsim has three main steps. Within the RAREsim R package here, we address Step #2.
 
 (1) Simulate genetic data with an abundance of rare variants using [HAPGEN2](https://mathgen.stats.ox.ac.uk/genetics_software/hapgen/hapgen2.html) (Su, 2011). By simulating with HAPGEN2 default parameters and input haplotypes with information at all sequencing bases, including monomorphic sites, HAPGEN2 simulates an abundance of rare variants.
 
@@ -210,35 +210,6 @@ print(bin_estimates)
 ```
 
 
-## Pruning Variants
-
-To prune, the expected number of variants are compared to a MAC file. Below is an example MAC file created from the haplotypes simulated for the African ancestry group and the region of interest. Each row represents one variant in the haplotype file.
-
-```{r }
-data("MAC_afr")
-```
-
-Pruning happens in two stages: 1) RAREsim theoretically decides which variants should be pruned and 2) the haplotype and legend files are edited. The theoretical pruning takes place within the RAREsim R package. The implementation of the pruning is done via a bash script - see the [RAREsim Example Code GitHub page](https://github.com/meganmichelle/RAREsim_Example).
-
-#### 1) Theoretically Prune
-
-Pruning variants requires a MAC file from the simulated data and the expected number of variants within each MAC bin (product of the *expected_variants* function).
-
-```{r}
-ToPrune <- prune_variants(MAC = MAC_afr, expected = bin_estimates)
-head(ToPrune$ToRemove, row.names = FALSE)
-head(ToPrune$ToChange)
-```
-
-The output from *prune_variants* includes the variants to prune - notated by line number in the haplotype file, the current allele count, and the new minor allele count. Variants that will either have all or a subset of minor alleles  removed. The variants with all alternate alleles removed is the ToRemove dataframe output, while the variants where a subset of alternate alleles are returned to reference is in the ToChange dataframe output.
-
-#### 2) Pruning Implementation
-
-See the [RAREsim Example Code GitHub page](https://github.com/meganmichelle/RAREsim_Example) for a bash script to prune the variants, given the output from the *prune_variants* function.
-
-
-### Simulated Genetic Data Complete!
-
-RAREsim simulated genetic data is complete once the pruning has been implemented. The resulting files are haplotype and legend files - the same format as the input reference datasets.
+The output from the *expected_variants* function will be used as input for simulations. See https://github.com/ryanlayer/raresim for more details.
 
 

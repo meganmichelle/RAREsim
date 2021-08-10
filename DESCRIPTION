@@ -12,3 +12,5 @@ VignetteBuilder: knitr
 Imports:
     nloptr,
     knitr,
+Suggests:
+    markdown
