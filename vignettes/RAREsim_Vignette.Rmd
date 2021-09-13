@@ -20,6 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 library(RAREsim)
+library(ggplot2)
 ```
 
 The source code for all functions within the RAREsim package can be found at <https://github.com/meganmichelle/RAREsim>.
@@ -71,6 +72,15 @@ nvar
 ```
 
 The output of the *fit_nvariant* function are the parameters phi ($\phi$) and omega ($\omega$), respectively. The estimated parameters can then be used to determine the expected number of variants per Kb, given the number of individuals to be simulated, $N_{sim}$.
+
+To visually check the fit of the function, we can plot the target data and the function.
+
+```{r }
+plot(nvariant_afr$n, nvariant_afr$per_kb,
+     xlab = 'Sample Size', ylab = 'Variants per Kb')
+lines(nvariant_afr$n, (nvar$phi*(nvariant_afr$n^nvar$omega)))
+
+```
 
 To simulate the sample size observed in the target data used here, ($N_{sim}=8128$), we calculate $\hat{f_{nvariant}} (N_{sim}) = \hat{\phi} N_{sim}^{\hat{\omega}}$. This can be done with the *nvariant* function. 
 
@@ -156,6 +166,25 @@ print(af)
 ```
 
 The output includes the estimated parameters alpha ($\alpha$), beta ($\beta$), and b, as well as the estimated proportion of variants in each MAC bin (Fitted_results).
+
+To check how well the function is fitting, we can plot the target data with the fitted function.
+
+```{r }
+# Label the target and  fitted data
+afs_afr$Data <- 'Target Data'
+af$Fitted_results$Data <- 'Fitted Function'
+
+# Combine into one data frame
+af_all<-rbind(afs_afr, af$Fitted_results)
+af_all$Data <- as.factor(af_all$Data)
+
+#plot
+ggplot(data = af_all)+
+  geom_point( mapping = aes(x= Lower, y= Prop, col = Data))+
+  labs(x = 'Lower Limit of MAC Bin',
+             y = 'Propoortion of Variants')
+
+```
 
 #### 2) Using Default Parameters
 
