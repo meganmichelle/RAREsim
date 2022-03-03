@@ -6,7 +6,7 @@ Description: Haplotype simulations of rare variant genetic data that emulates re
 Author: Megan M Null
 Maintainer: Megan M Null <megan.null@ucdenver.edu>
 License: MIT + file LICENSE
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.2
 Encoding: UTF-8
 VignetteBuilder: knitr
 Imports:
