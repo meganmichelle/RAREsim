@@ -22,25 +22,25 @@
 fit_afs <- function(Observed_bin_props, p_rv = NULL){
     
     # Check the column names of Observed_bin_props
-    if((colnames(Observed_bin_props)[1] == 'Lower') == FALSE | (colnames(Observed_bin_props)[2]  == 'Upper') == FALSE |
-        (colnames(Observed_bin_props)[3] == 'Prop') == FALSE ){
+    if(colnames(Observed_bin_props)[1] != 'Lower' | colnames(Observed_bin_props)[2]  != 'Upper' |
+        colnames(Observed_bin_props)[3] != 'Prop'){
         stop('Observed_bin_props needs to have column names Lower, Upper, and Prop')
     }
     
     # Make sure the Observed_bin_props are numeric
     Observed_bin_props$Prop <- (as.numeric(as.character(Observed_bin_props$Prop)))
     
-    # Make sure there are not any NA's in the proportions
-    if(anyNA(Observed_bin_props$Prop) == TRUE){
+    # Make sure there are not any NAs in the proportions
+    if(anyNA(Observed_bin_props$Prop)){
         stop('Proportions in Observed_bin_props need to be numeric with no NA values')
     }
     
-    if((is.numeric(Observed_bin_props$Lower) ==  FALSE) | (is.numeric(Observed_bin_props$Upper) == FALSE)){
+    if(!is.numeric(Observed_bin_props$Lower) | !is.numeric(Observed_bin_props$Upper)){
         stop('Observed_bin_props MAC bins need to be numberic')
     }
     
     # Check the order of the MAC bins
-    if(is.unsorted(Observed_bin_props$Upper)==TRUE){
+    if(is.unsorted(Observed_bin_props$Upper)){
         stop('The MAC bins need to be ordered from smallest to largest')
     }
     

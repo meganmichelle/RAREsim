@@ -1,11 +1,12 @@
 ---
 title: "RAREsim Vignette"
 output:
-  rmarkdown::pdf_document
+  BiocStyle::html_document:
+    toc: true
 vignette: >
-  %\VignetteEngine{knitr::knitr}
   %\VignetteIndexEntry{RAREsim Vignette}
-  \usepackage[UTF-8]{inputenc}  
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8} 
 ---
 This vigette describes how to use the RAREsim R package to simulate rare variant genetic data. Here, R functions within the package are described in more detail. A start to finish simulation with RAREsim can be found online at the [RAREsim Example Code GitHub page](https://github.com/meganmichelle/RAREsim_Example). 
 

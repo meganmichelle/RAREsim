@@ -20,5 +20,4 @@ A dataframe specifying the number of variants per Kb at various sample sizes is 
 data("nvariant_afr")
 fit_nvariant(nvariant_afr)
 
-
 }

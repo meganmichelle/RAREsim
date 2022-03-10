@@ -32,28 +32,27 @@
 afs <- function(alpha=NULL, beta=NULL, b=NULL, mac_bins, pop=NULL){
     
     # Check that the default population is correctly specified
-    if(is.null(pop)==FALSE && (pop == 'AFR' | pop == 'EAS' | pop == 'NFE' | pop == 'SAS') == FALSE){
+    if(!is.null(pop) && !(pop == 'AFR' | pop == 'EAS' | pop == 'NFE' | pop == 'SAS')){
         stop('Default ancestries must be specified as AFR, EAS, NFE, or SAS.')
     }
     
     # check that the parameters are numeric
-    if((is.null(pop)==TRUE)  & ((is.numeric(alpha) == FALSE) | (is.numeric(beta) == FALSE) |
-                                (is.numeric(b) == FALSE))){
+    if(is.null(pop) && (!is.numeric(alpha) | !is.numeric(beta) | !is.numeric(b))){
         stop('Error: at least one parameter is not numeric')
     }
     
     # Check to the correct column names for the MAC bins
-    if((colnames(mac_bins)[1] == 'Lower') == FALSE | (colnames(mac_bins)[2]  == 'Upper') == FALSE){
+    if(colnames(mac_bins)[1] != 'Lower'| colnames(mac_bins)[2]  != 'Upper'){
         stop('mac_bins files needs to have column names Lower and Upper')
     }
     
     # Check that the MAC bins are defined with numeric values
-    if((is.numeric(mac_bins$Lower) ==  FALSE) | (is.numeric(mac_bins$Upper) == FALSE)){
+    if(!is.numeric(mac_bins$Lower) | !is.numeric(mac_bins$Upper)){
         stop('mac_bins columns need to be numberic')
     }
     
     # Check the order of the MAC bins
-    if(is.unsorted(mac_bins$Upper)==TRUE){
+    if(is.unsorted(mac_bins$Upper)){
         stop('The MAC bins need to be ordered from smallest to largest')
     }
     
@@ -88,7 +87,7 @@ afs <- function(alpha=NULL, beta=NULL, b=NULL, mac_bins, pop=NULL){
     }
     
     # create a placeholder matrix with a column for each MAC
-    fit <- as.data.frame(matrix(nrow =  1,  ncol = mac_bins$Upper[nrow(mac_bins)]))
+    fit <- as.data.frame(matrix(nrow =  1, ncol = mac_bins$Upper[nrow(mac_bins)]))
     
     # calculate the proportion of variants at each individual MAC
     for(i in 1:mac_bins$Upper[nrow(mac_bins)]){

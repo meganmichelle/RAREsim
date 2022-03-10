@@ -19,24 +19,24 @@
 fit_nvariant <- function(Observed_variants_per_kb){
     
     # Check that each column is numeric
-    if(is.numeric(Observed_variants_per_kb[,1]) == FALSE | is.numeric(Observed_variants_per_kb[,2]) == FALSE){
+    if(!is.numeric(Observed_variants_per_kb[,1]) | !is.numeric(Observed_variants_per_kb[,2])){
         stop('Error: Columns needs to  be numeric')
     }
     
     # Check that there are not any NA values
-    if(anyNA(Observed_variants_per_kb[,2]) == TRUE){
+    if(anyNA(Observed_variants_per_kb[,2])){
         stop('Number of variants per Kb need to be numeric with no NA values')
     }
     
     # Check that the sample sizes go from smallest to largest
-    if(is.unsorted(Observed_variants_per_kb[,1])==TRUE){
+    if(is.unsorted(Observed_variants_per_kb[,1])){
         stop('The sample sizes need to be ordered from smallest to largest')
     }
     
     # define the least squares loss function
     leastsquares <- function(tune){ # function of the parameters (phi and omega)
         E <- tune[1]*(Observed_variants_per_kb[,1]^(tune[2])) # calculated the expected number of variants (from the function)
-        sq_err <- (E - Observed_variants_per_kb[,2])^2 ## calculate the squared errror of expected - observed
+        sq_err <- (E - Observed_variants_per_kb[,2])^2 ## calculate the squared error of expected - observed
         d <- sum(sq_err) # sum over the sample sizes
         return(d) # return the squared error
     }

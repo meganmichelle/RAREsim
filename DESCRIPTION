@@ -4,14 +4,22 @@ Date: 2020-08-01
 Title: Simulation of Rare Variant Genetic Data
 Description: Haplotype simulations of rare variant genetic data that emulates real data can be performed with RAREsim. RAREsim uses the expected number of variants in MAC bins - either  as provided by default parameters or estimated from  target data - and  an abundance of rare variants as simulated HAPGEN2 to probabilistically prune variants. RAREsim produces haplotypes that emulate real sequencing data with respect to the total number of variants, allele frequency spectrum, haplotype structure, and variant annotation.
 Authors@R: c(person(given = "Megan", family = "Null", role = "aut", email = "mnull@collegeofidaho.edu"),
-             person(give = "Ryan", family = "Barnard", role = "cre", email = "rbarnard1107@gmail.com"))
-License: MIT
-biocViews: Genetics, Software
+             person(given = "Ryan", family = "Barnard", role = "cre", email = "rbarnard1107@gmail.com"))
+URL: https://github.com/meganmichelle/RAREsim
+BugReports: https://github.com/meganmichelle/RAREsim/issues
+License: GPL-3
+LazyData: FALSE
+biocViews: Genetics, Software, VariantAnnotation, Sequencing
 RoxygenNote: 7.1.2
 Encoding: UTF-8
 VignetteBuilder: knitr
+Depends:
+    R (>= 4.1.0)
 Imports:
-    nloptr
+    nloptr,
+    knitr
 Suggests:
     markdown,
-    knitr
+    ggplot2,
+    BiocStyle,
+    rmarkdown

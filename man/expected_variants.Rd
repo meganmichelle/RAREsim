@@ -23,6 +23,6 @@ This function combines the Number of Variants and AFS functions to produces the 
  data('afs_afr')
  mac <- afs_afr[,c(1:2)]
  expected_variants(Total_num_var = 19.029*nvariant(pop='AFR', N = 8128),
-  mac_bin_prop = afs(mac_bins = mac, pop = 'AFR'))
+ mac_bin_prop = afs(mac_bins = mac, pop = 'AFR'))
 
 }

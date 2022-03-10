@@ -22,24 +22,24 @@
 
 expected_variants <- function(Total_num_var,mac_bin_prop){
     
-    if(is.numeric(Total_num_var) == FALSE){
+    if(!is.numeric(Total_num_var)){
         stop('Error: Total_num_var needs to be numeric')
     }
     
-    if((colnames(mac_bin_prop)[1] == 'Lower') == FALSE | (colnames(mac_bin_prop)[2]  == 'Upper') == FALSE
-        | (colnames(mac_bin_prop)[3]  == 'Prop') ==  FALSE){
+    if(colnames(mac_bin_prop)[1] != 'Lower' | colnames(mac_bin_prop)[2]  != 'Upper' 
+       | colnames(mac_bin_prop)[3]  != 'Prop'){
         stop('mac_bin_prop needs to have column names Lower, Upper, and  Prop, respectively')
     }
     
     ## mac needs  to have numeric values in each column
-    if(is.numeric(mac_bin_prop$Prop) == FALSE){
+    if(!is.numeric(mac_bin_prop$Prop)){
         stop('The column of Proportion of variants is required to be numeric')
     }
     
     # Multiply the proportion in each bin by the total number of variants
     mac_bin_prop$Expected_var <- Total_num_var*mac_bin_prop$Prop
     
-    # Subset to the columns we want (removing the original proporiton)
+    # Subset to the columns we want (removing the original proportion)
     mac <- mac_bin_prop[,c(1,2,4)]
     
     # Return the new data frame with the expected number of variants per bin

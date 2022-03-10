@@ -17,7 +17,7 @@
 #' @return the number of variants per kb
 #'
 #' @examples
-#' nvariant(N=8128, pop = 'AFR')
+#' nvariant(N = 8128, pop = 'AFR')
 #' nvariant(phi = 0.1638108, omega = 0.6248848, N = 8128)
 #'
 #' @keywords RAREsim
@@ -25,16 +25,16 @@
 #' @export
 #'
 
-nvariant<-function(phi=NULL, omega=NULL, N,  pop=NULL){
-    
+nvariant<-function(phi = NULL, omega = NULL, N,  pop = NULL){
     # Check if the simulation sample size is larger than 125k
-    if(N>125000){
-        warning('We currently do not recommend simulating sample sizes over 125,000')
+    if(N > 125000){
+        warning('We currently do not recommend simulating sample sizes
+                over 125,000')
     }
     
-    if(N<2000){
-        warning('To simulate <2000 individuals, use RAREsim to simulate 2000 individuals
-            and randomly downsample to the desired size')
+    if(N < 2000){
+        warning('To simulate <2000 individuals, use RAREsim to simulate 2000
+                individuals and randomly downsample to the desired size')
     }
     
     # If either both parameters should be specified or the ancestry for default parameters
@@ -43,12 +43,13 @@ nvariant<-function(phi=NULL, omega=NULL, N,  pop=NULL){
     }
     
     # Ensure the default parameter ancestry is correctly specified
-    if(is.null(pop)==FALSE && (pop == 'AFR' | pop == 'EAS' | pop == 'NFE' | pop == 'SAS') == FALSE){
+    if(!is.null(pop) && !(pop == 'AFR' | pop == 'EAS' | pop == 'NFE' |
+                               pop == 'SAS')){
         stop('Default ancestries must be specified as AFR, EAS, NFE, or SAS.')
     }
     
     # If parameters are specified, they must be numeric
-    if((is.null(pop)==TRUE)  & ((is.numeric(phi) == FALSE) | (is.numeric(omega) == FALSE))){
+    if(is.null(pop) && (!is.numeric(phi) | !is.numeric(omega))){
         stop('Error: at least one parameter is not numeric')
     }
     
@@ -78,6 +79,3 @@ nvariant<-function(phi=NULL, omega=NULL, N,  pop=NULL){
     # Return the calculated function
     return(fn)
 }
-
-
-
