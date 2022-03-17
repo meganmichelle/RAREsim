@@ -40,7 +40,7 @@ fit_afs <- function(Observed_bin_props, p_rv = NULL){
     }
     
     # Check the order of the MAC bins
-    if(is.unsorted(Observed_bin_props$Upper)){
+    if(is.unsorted(Observed_bin_props$Upper) | is.unsorted(Observed_bin_props$Lower)){
         stop('The MAC bins need to be ordered from smallest to largest')
     }
     
