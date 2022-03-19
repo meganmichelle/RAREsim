@@ -26,9 +26,8 @@ Otherwise, the parameters phi and omega need to be provided.
 Phi and omega can be estimated from target data using the Fit_nvariant function.
 }
 \examples{
-nvariant(N=8128, pop = 'AFR') 
+nvariant(N = 8128, pop = 'AFR')
 nvariant(phi = 0.1638108, omega = 0.6248848, N = 8128)
-
 
 }
 \keyword{RAREsim}
