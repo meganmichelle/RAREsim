@@ -50,26 +50,26 @@ nvariant<-function(phi = NULL, omega = NULL, N,  pop = NULL){
     
     # If parameters are specified, they must be numeric
     if(is.null(pop) && (!is.numeric(phi) | !is.numeric(omega))){
-        stop('Error: at least one parameter is not numeric')
+        stop('At least one parameter is not numeric')
     }
     
     # Specify the default parameters
     if(is.null(phi) & is.null(omega)){
         if(pop == 'AFR'){
-            phi = 0.1576
-            omega = 0.6247
+            phi <- 0.1576
+            omega <- 0.6247
         }
         if(pop == 'EAS'){
-            phi = 0.1191
-            omega = 0.6369
+            phi <- 0.1191
+            omega <- 0.6369
         }
         if(pop == 'NFE'){
-            phi = 0.1073
-            omega = 0.6539
+            phi <- 0.1073
+            omega <- 0.6539
         }
         if(pop == 'SAS'){
-            phi =0.1249
-            omega = 0.6495
+            phi <- 0.1249
+            omega <- 0.6495
         }
     }
     

@@ -1,2 +1,6 @@
 CHANGES IN VERSION 0.99.0 (2022-03-17)
 + Submitted to Bioconductor
+
+CHANGES IN VERSION 0.99.2 (2022-04-13)
++ Reformatted vignette
++ Addressed BiocCheck notes

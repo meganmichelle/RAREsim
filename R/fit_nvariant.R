@@ -20,7 +20,7 @@ fit_nvariant <- function(Observed_variants_per_kb){
     
     # Check that each column is numeric
     if(!is.numeric(Observed_variants_per_kb[,1]) | !is.numeric(Observed_variants_per_kb[,2])){
-        stop('Error: Columns needs to  be numeric')
+        stop('Columns need to  be numeric')
     }
     
     # Check that there are not any NA values
@@ -55,12 +55,12 @@ fit_nvariant <- function(Observed_variants_per_kb){
     
     ### Use SLSQP to find phi and omega
     re_LS <- suppressMessages(slsqp(tune, fn = leastsquares, hin = hin.tune,
-                                    control = list(xtol_rel = 1e-12))) # suppressMessages because SLSQP always give a warning
+                                    control = list(xtol_rel <- 1e-12))) # suppressMessages because SLSQP always give a warning
     
     # If the original starting value resulted in a large loss (>1000), iterate over starting values
     if(re_LS$value > 1000){
         re_tab1<-c() # create to hold the new parameters
-        for(omega in c(seq(0.15,0.65, by=0.1))){ ### optimize with different values of omega
+        for(omega in c(seq(0.15,0.65, by = 0.1))){ ### optimize with different values of omega
             
             # specify phi to  fit the end of the function with the current value of omega
             phi <- Observed_variants_per_kb[which.max(Observed_variants_per_kb[,1]),2]/(Observed_variants_per_kb[which.max(Observed_variants_per_kb[,1]),1])^omega
@@ -77,6 +77,6 @@ fit_nvariant <- function(Observed_variants_per_kb){
         return(list( phi=re_fin[1], omega=re_fin[2])) # return the phi and omega that resulted in the smallest loss
     }
     else{ # if the loss was <1000, bring the parameters forward
-        return(list( phi=re_LS$par[1], omega=re_LS$par[2])) # return phi and omega
+        return(list(phi = re_LS$par[1], omega = re_LS$par[2])) # return phi and omega
     }
 }

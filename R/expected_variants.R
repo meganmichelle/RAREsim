@@ -20,10 +20,10 @@
 #' @export
 
 
-expected_variants <- function(Total_num_var,mac_bin_prop){
+expected_variants <- function(Total_num_var, mac_bin_prop){
     
     if(!is.numeric(Total_num_var)){
-        stop('Error: Total_num_var needs to be numeric')
+        stop('Total_num_var needs to be numeric')
     }
     
     if(colnames(mac_bin_prop)[1] != 'Lower' | colnames(mac_bin_prop)[2]  != 'Upper' 

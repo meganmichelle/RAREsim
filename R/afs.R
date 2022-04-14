@@ -29,7 +29,7 @@
 #' @export
 #'
 
-afs <- function(alpha=NULL, beta=NULL, b=NULL, mac_bins, pop=NULL){
+afs <- function(alpha = NULL, beta = NULL, b = NULL, mac_bins, pop = NULL){
     
     # Check that the default population is correctly specified
     if(!is.null(pop) && !(pop == 'AFR' | pop == 'EAS' | pop == 'NFE' | pop == 'SAS')){
@@ -38,7 +38,7 @@ afs <- function(alpha=NULL, beta=NULL, b=NULL, mac_bins, pop=NULL){
     
     # check that the parameters are numeric
     if(is.null(pop) && (!is.numeric(alpha) | !is.numeric(beta) | !is.numeric(b))){
-        stop('Error: at least one parameter is not numeric')
+        stop('At least one parameter is not numeric')
     }
     
     # Check to the correct column names for the MAC bins
@@ -58,36 +58,36 @@ afs <- function(alpha=NULL, beta=NULL, b=NULL, mac_bins, pop=NULL){
     
     ### check that if parameters are null, a population specified
     if((is.null(alpha) | is.null(beta) | is.null(b)) & is.null(pop)){
-        stop('Error: either a default population should be specified or
+        stop('Either a default population should be specified or
             all three parameters provided')
     }
     
     # specify the default parameters
     if(is.null(alpha)){
         if(pop == 'AFR'){
-            alpha = 1.5883
-            beta = -0.3083
-            b = 0.2872
+            alpha <- 1.5883
+            beta <- -0.3083
+            b <- 0.2872
         }
         if(pop == 'EAS'){
-            alpha = 1.6656
-            beta = -0.2951
-            b =  0.3137
+            alpha <- 1.6656
+            beta <- -0.2951
+            b <- 0.3137
         }
         if(pop == 'NFE'){
-            alpha  = 1.9470
-            beta  = 0.1180
-            b = 0.6676
+            alpha <- 1.9470
+            beta <- 0.1180
+            b <- 0.6676
         }
         if(pop == 'SAS'){
-            alpha = 1.6977
-            beta = -0.2273
-            b =  0.3564
+            alpha <- 1.6977
+            beta <- -0.2273
+            b <- 0.3564
         }
     }
     
     # create a placeholder matrix with a column for each MAC
-    fit <- as.data.frame(matrix(nrow =  1, ncol = mac_bins$Upper[nrow(mac_bins)]))
+    fit <- as.data.frame(matrix(nrow = 1, ncol = mac_bins$Upper[nrow(mac_bins)]))
     
     # calculate the proportion of variants at each individual MAC
     for(i in 1:mac_bins$Upper[nrow(mac_bins)]){
