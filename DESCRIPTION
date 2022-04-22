@@ -1,5 +1,5 @@
 Package: RAREsim
-Version: 0.99.3
+Version: 0.99.4
 Date: 2020-08-01
 Title: Simulation of Rare Variant Genetic Data
 Description: Haplotype simulations of rare variant genetic data that emulates real data can be performed with RAREsim. RAREsim uses the expected number of variants in MAC bins - either  as provided by default parameters or estimated from  target data - and  an abundance of rare variants as simulated HAPGEN2 to probabilistically prune variants. RAREsim produces haplotypes that emulate real sequencing data with respect to the total number of variants, allele frequency spectrum, haplotype structure, and variant annotation.
