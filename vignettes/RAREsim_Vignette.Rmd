@@ -44,7 +44,13 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Installing the RAREsim Package
-To install RAREsim execute the following code or visit [https://bioconductor.org/install/](https://bioconductor.org/install/) for instructions
+To install RAREsim execute the following code or visit [https://bioconductor.org/install/](https://bioconductor.org/install/) for instructions.
+
+```{r, eval=FALSE}
+if (!require("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("RAREsim")
+```
 
 # RAREsim R package: Estimate expected number of rare variants per MAC bin
 

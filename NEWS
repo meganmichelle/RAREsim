@@ -4,3 +4,6 @@ CHANGES IN VERSION 0.99.0 (2022-03-17)
 CHANGES IN VERSION 0.99.2 (2022-04-13)
 + Reformatted vignette
 + Addressed BiocCheck notes
+
+CHANGES IN VERSION 0.99.3 (2022-04-22)
++ Fixed "Installing the Package" in the vignette
