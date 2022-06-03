@@ -20,7 +20,3 @@ The pruning process is done with the [RAREsim python package](https://github.com
 # More Information
 
 RAREsim is a flexible and accurate rare variant simulation algorithm that emulates real data. Using parameters and haplotypes derived from real sequencing data, RAREsim efficiently simulates the expected variant distribution and enables real variant annotations. See the full article here: https://doi.org/10.1016/j.ajhg.2022.02.009.
-
-# Beta
-
-RAREsim is currently in beta.
